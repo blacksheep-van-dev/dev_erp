@@ -35,9 +35,6 @@
             "migrations/.gitignore"
         ]
     },
-    "onlinq/form-collection-bundle": {
-        "version": "0.2.1"
-    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
