@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OptionStock index
+{% endblock %}
+
+{% block body %}
+
+	{# flash #}
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-success">
+			{{ message }}
+		</div>
+	{% endfor %}
+
+	{% for message in app.flashes('warning') %}
+		<div class="alert alert-warning">
+			{{ message }}
+		</div>
+	{% endfor %}
+
+
+	<h3>Gestion des stocks d'options</h3>
+
+	<table class="table">
+		<thead>
+			<tr>
+				{# <th>Id</th> #}
+				<th>Option</th>
+                <th>Agence</th>
+				<th>Quantité</th>
+				<th>Prix</th>
+				<th>Statut</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for option_stock in option_stocks %}
+				<tr>
+					{# <td>{{ option_stock.id }}</td> #}
+					<td>{{ option_stock.options}}</td>
+                    <td>{{ option_stock.agency}}</td>
+					<td>{{ option_stock.quantity }}</td>
+					<td>{{ option_stock.price }}</td>
+					<td>{{ option_stock.enabled ? 'Oui' : 'Non' }}</td>
+
+					<td>
+						<a href="{{ path('app_option_stock_show', {'id': option_stock.id}) }}">Voir</a>
+						<a href="{{ path('app_option_stock_edit', {'id': option_stock.id}) }}">Modifier</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">Rien à afficher</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a class="btn btn-success btn-sm" href="{{ path('app_option_stock_new') }}">Ajouter</a>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Option index{% endblock %}
+
+{% block body %}
+    <h1>Option index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Label</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Consumable</th>
+                <th>StockControl</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for option in options %}
+            <tr>
+                <td>{{ option.id }}</td>
+                <td>{{ option.createdAt ? option.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ option.updatedAt ? option.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ option.label }}</td>
+                <td>{{ option.description }}</td>
+                <td>{{ option.price }}</td>
+                <td>{{ option.image }}</td>
+                <td>{{ option.consumable ? 'Yes' : 'No' }}</td>
+                <td>{{ option.stockControl ? 'Yes' : 'No' }}</td>
+                <td>{{ option.type }}</td>
+                <td>
+                    <a href="{{ path('app_option_show', {'id': option.id}) }}">show</a>
+                    <a href="{{ path('app_option_edit', {'id': option.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_option_new') }}">Create new</a>
+{% endblock %}

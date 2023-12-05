@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Booking index
+{% endblock %}
+
+{% block body %}
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+	
+
+		
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+		  themeSystem: 'bootstrap5',
+          //initialView: 'dayGridWeek',
+		  initialView: 'dayGridMonth',
+	
+		  events: [
+			{% for event in events %}
+			{
+			  title: '{{ event.type }} -- {{ event.product.label }}',
+			  start: '{{ event.dateBegin ? event.dateBegin|date('Y-m-d') : '' }}',
+			  end: '{{ event.dateEnd ? event.dateEnd|date('Y-m-d') : '' }}',
+			  url: '{{ path('app_product_event_show', {'id': event.id}) }}'
+		
+			},
+			{% endfor %}
+		  ],
+
+		  // /productevent/list
+		  
+		  
+
+		  locale: 'fr',
+		  
+
+        });
+        calendar.render();
+      });
+
+    </script>
+
+	<h1>Bookings</h1>
+
+	
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Reference</th>
+				<th>Client</th>
+				{# client #}
+				{# dateBegin #}
+				{# dateEnd #}<th>dateBegin
+				</th><th>dateEnd
+				</th><th>Booking items
+				</th><th>actions
+			</th>
+		</tr>
+		</thead>
+			<tbody>
+				{% for booking in bookings %}
+					<tr><td>{{ booking.id }}
+					</td><td>{{ booking.reference }}
+					</td><td>
+						{{ booking.user.firstName }}{{booking.user.lastName}}
+					</td><td>{{ booking.dateBegin ? booking.dateBegin|date('Y-m-d') : '' }}
+					</td><td>{{ booking.dateEnd ? booking.dateEnd|date('Y-m-d') : '' }}
+					</td>
+						<td>
+							<ul>
+								{% for bookingItem in booking.bookingItems %}
+								{# getProduct #}<li>{{ bookingItem.product.label }}
+							</li>
+						{% endfor %}
+					</ul>
+					</td>
+						<td><a href="{{ path('app_booking_show', {'id': booking.id}) }}"> show</a>
+						<a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_booking_new') }}">Create new</a>
+
+	 <div id='calendar'></div>
+{% endblock %}

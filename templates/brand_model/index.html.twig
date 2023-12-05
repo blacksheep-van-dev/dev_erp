@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BrandModel index{% endblock %}
+
+{% block body %}
+    <h1>BrandModel index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Label</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for brand_model in brand_models %}
+            <tr>
+                <td>{{ brand_model.id }}</td>
+                <td>{{ brand_model.label }}</td>
+                <td>
+                    <a href="{{ path('app_brand_model_show', {'id': brand_model.id}) }}">show</a>
+                    <a href="{{ path('app_brand_model_edit', {'id': brand_model.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_brand_model_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProductEvent{% endblock %}
+
+{% block body %}
+    <h1>ProductEvent</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ product_event.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ product_event.type }}</td>
+            </tr>
+            <tr>
+                <th>DateBegin</th>
+                <td>{{ product_event.dateBegin ? product_event.dateBegin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateEnd</th>
+                <td>{{ product_event.dateEnd ? product_event.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Km</th>
+                <td>{{ product_event.km }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_product_event_index') }}">back to list</a>
+
+    <a href="{{ path('app_product_event_edit', {'id': product_event.id}) }}">edit</a>
+
+    {{ include('product_event/_delete_form.html.twig') }}
+{% endblock %}

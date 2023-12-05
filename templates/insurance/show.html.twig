@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Insurance{% endblock %}
+
+{% block body %}
+    <h1>Insurance</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ insurance.id }}</td>
+            </tr>
+            <tr>
+                <th>Label</th>
+                <td>{{ insurance.label }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ insurance.description }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ insurance.price }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_insurance_index') }}">back to list</a>
+
+    <a href="{{ path('app_insurance_edit', {'id': insurance.id}) }}">edit</a>
+
+    {{ include('insurance/_delete_form.html.twig') }}
+{% endblock %}

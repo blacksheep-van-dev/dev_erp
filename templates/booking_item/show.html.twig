@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BookingItem{% endblock %}
+
+{% block body %}
+    <h1>BookingItem</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ booking_item.id }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ booking_item.price }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ booking_item.quantity }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_booking_item_index') }}">back to list</a>
+
+    <a href="{{ path('app_booking_item_edit', {'id': booking_item.id}) }}">edit</a>
+
+    {{ include('booking_item/_delete_form.html.twig') }}
+{% endblock %}

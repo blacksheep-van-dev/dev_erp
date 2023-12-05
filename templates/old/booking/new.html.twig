@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Booking
+{% endblock %}
+
+{% block body %}
+	<h1>Create new Booking</h1>
+
+	{# <form method="post" action="{{ path('app_booking_new') }}"> #}
+
+    <form method="post" action="{{ path('app_booking_new') }}" hx-post="/booking/new" hx-target="#products">
+
+
+        <div class="form-group mb-2">
+            <label for="agency">Choix de l'agence</label>
+            <select class="form-control" id="agency" name="agency">
+            {% for agencies in agency %}
+                <option value="{{ agencies.id }}">{{ agencies.name }}</option>
+                		{% endfor %}
+
+            </select>
+        </div>
+
+       
+
+		<input
+		type="text" class="form-control" name="daterange" value="01/01/2015 - 01/31/2024"/>
+
+
+
+         <div id="products"></div>
+
+
+		<button class="btn btn-success mt-2" type="submit">Vérifier</button>
+
+	</form>
+
+
+	{# {{ include('booking/_form.html.twig') }} #}
+
+	<a href="{{ path('app_booking_index') }}">back to list</a>
+
+
+	 <script>
+	    					
+            // var start = -1 year
+            var start = moment().subtract(1, 'month');
+
+
+            var end = moment();
+
+            $('input[name="daterange"]').daterangepicker(
+
+            {   timePicker: true,
+                locale: {
+                format: 'DD/MM/YYYY hh:mm:ss'
+                },
+                startDate: start,
+                // endDate: // today date
+                endDate: end,
+                // label
+
+
+            }, function(start, end, label) {
+                //console.log(start.format('DD/MM/YYYY hh:mm') + ' - ' + end.format('DD/MM/YYYY hh:mm'));
+
+
+
+
+
+
+            }
+
+
+
+            );
+
+
+
+
+	</script>
+{% endblock %}

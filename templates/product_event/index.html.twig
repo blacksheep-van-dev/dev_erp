@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProductEvent index{% endblock %}
+
+{% block body %}
+    <h1>ProductEvent index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>DateBegin</th>
+                <th>DateEnd</th>
+                <th>Km</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product_event in product_events %}
+            <tr>
+                <td>{{ product_event.id }}</td>
+                <td>{{ product_event.type }}</td>
+                <td>{{ product_event.dateBegin ? product_event.dateBegin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product_event.dateEnd ? product_event.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product_event.km }}</td>
+                <td>
+                    <a href="{{ path('app_product_event_show', {'id': product_event.id}) }}">show</a>
+                    <a href="{{ path('app_product_event_edit', {'id': product_event.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_product_event_new') }}">Create new</a>
+{% endblock %}

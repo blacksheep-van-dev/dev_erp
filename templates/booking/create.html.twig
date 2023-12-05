@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+{# create form  #}
+
+{# <form method="post" action="/booking/create"> #}
+
+<form hx-post="/booking/create">
+
+<div class="form-group mt-2">
+<label for="calendar">Choix des dates</label><br/>
+
+<input id="calendar" type="text" name="datetimes" />
+</div>
+
+
+
+{# select agencies #}
+<div class="form-group mt-2">
+<label for="agencies">Agence de départ</label>
+<select class="form-control" id="agencies" name="agencies">
+{% for agency in agencies %}
+<option value="{{agency.id}}">{{agency.name}}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="form-group mt-2">
+<label for="agencies">Agence de retour</label>
+<select class="form-control" id="agencies" name="agencies">
+{% for agency in agencies %}
+<option value="{{agency.id}}">{{agency.name}}</option>
+{% endfor %}
+</select>
+</div>
+
+{# select clients #}
+<div class="form-group mt-2">
+<label for="agencies">Choix du client</label>
+<select class="form-control" id="user" name="user">
+{% for user in users %}
+<option value="{{user.id}}">{{user.firstName}} {{user.lastName}}</option>
+{% endfor %}
+</select>
+</div>
+
+{# cars category #}
+<div id="vehicule_cat">
+
+</div>
+
+
+{# btn #}
+<button id="submit" class="btn btn-primary mt-2">VALIDER</button>
+</form>
+
+
+</div>
+<script>
+// native document reay
+document.addEventListener('DOMContentLoaded', function() {
+
+    let agenceDepart ='';
+    let agenceRetour ='';
+    let dateDepart ='';
+    let dateRetour ='';
+
+// calendar init
+$(function() {
+  $('input[name="datetimes"]').daterangepicker({
+    timePicker: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(32, 'hour'),
+    locale: {
+      format: 'M/DD hh:mm A'
+    }
+  });
+
+  // calendar on changes
+    $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
+        dateDepart = picker.startDate.format('YYYY-MM-DD HH:mm:ss');
+        dateRetour = picker.endDate.format('YYYY-MM-DD HH:mm:ss');
+        console.log(dateDepart);
+        console.log(dateRetour);
+    });
+
+});
+
+// on form submit native js
+document.getElementById('submit').addEventListener('click', function(e) {
+    e.preventDefault();
+    agenceDepart = document.getElementById('agencies').value;
+    agenceRetour = document.getElementById('agencies').value;
+
+
+
+    // fetch api
+    fetch('/booking/findProductWithoutEvent', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            agenceDepart: agenceDepart,
+            agenceRetour: agenceRetour,
+            dateDepart: dateDepart,
+            dateRetour: dateRetour
+        })
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data.data);
+        var html = '';
+
+        // lopp through array of objects    
+        for (var i in data.data) {
+            html += '<div class="form-group mt-2">';
+            html += '<label for="agencies">Catégorie du véhicule / produit</label>';
+            html += '<select class="form-control" id="vehicule" name="vehicule">';
+            html += '<option value="'+data.data[i].id+'">'+data.data[i].category+'</option>';
+            html += '</select>';
+            html += '</div>';
+        }
+
+        // append html
+        document.getElementById('vehicule_cat').innerHTML = html;
+
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // fetch url
+/*
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/booking/findProductWithoutEvent');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            console.log('DATA:'+data);
+            var html = '';
+
+            // loop on data
+            for (var i in data) {
+                html += '<div class="form-group mt-2">';
+                html += '<label for="agencies">Choix du véhicule</label>';
+                html += '<select class="form-control" id="vehicule" name="vehicule">';
+                html += '<option value="'+data[i].id+'">'+data[i].id+'</option>';
+                html += '</select>';
+                html += '</div>';
+            }
+           
+           
+
+            // append html
+            document.getElementById('vehicule_cat').innerHTML = html;
+      
+      
+        }
+    };
+    var requestBody = JSON.stringify({
+        agenceDepart: agenceDepart,
+        agenceRetour: agenceRetour,
+        dateDepart: dateDepart,
+        dateRetour: dateRetour
+    });
+    xhr.send(requestBody);
+    */
+});
+
+
+});
+</script>
+{% endblock %}

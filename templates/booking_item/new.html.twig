@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New BookingItem{% endblock %}
+
+{% block body %}
+    <h1>Create new BookingItem</h1>
+
+    {{ include('booking_item/_form.html.twig') }}
+
+    <a href="{{ path('app_booking_item_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BookingItem index{% endblock %}
+
+{% block body %}
+    <h1>BookingItem index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking_item in booking_items %}
+            <tr>
+                <td>{{ booking_item.id }}</td>
+                <td>{{ booking_item.price }}</td>
+                <td>{{ booking_item.quantity }}</td>
+                <td>
+                    <a href="{{ path('app_booking_item_show', {'id': booking_item.id}) }}">show</a>
+                    <a href="{{ path('app_booking_item_edit', {'id': booking_item.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_booking_item_new') }}">Create new</a>
+{% endblock %}

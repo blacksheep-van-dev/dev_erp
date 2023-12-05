@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New OptionStock{% endblock %}
+
+{% block body %}
+<a href="{{ path('app_option_stock_index') }}">Retour</a>
+    <h3>Création d'un stock d'options</h3>
+    
+
+
+
+    {{ include('option_stock/_form.html.twig') }}
+
+    
+{% endblock %}

@@ -1,0 +1,10 @@
+{# productCategories loop #}
+<select name="products" class="mt-2" hx-get="/booking/getImmatByProductCategory" hx-target="#immat">
+    <option value="0">Catégories disponibles</option>
+    {% for product in products %}
+        <option value="{{ product.productCategory.id }}">{{ product.productCategory.label }}</option>
+    {% endfor %}
+
+</select>
+
+<div id="immat"></div>

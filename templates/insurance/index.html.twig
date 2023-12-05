@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Insurance index{% endblock %}
+
+{% block body %}
+    <h1>Insurance index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Label</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for insurance in insurances %}
+            <tr>
+                <td>{{ insurance.id }}</td>
+                <td>{{ insurance.label }}</td>
+                <td>{{ insurance.description }}</td>
+                <td>{{ insurance.price }}</td>
+                <td>
+                    <a href="{{ path('app_insurance_show', {'id': insurance.id}) }}">show</a>
+                    <a href="{{ path('app_insurance_edit', {'id': insurance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_insurance_new') }}">Create new</a>
+{% endblock %}

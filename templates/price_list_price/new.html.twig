@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PriceListPrice{% endblock %}
+
+{% block body %}
+    <h1>Create new PriceListPrice</h1>
+
+    {{ include('price_list_price/_form.html.twig') }}
+
+    <a href="{{ path('app_price_list_price_index') }}">back to list</a>
+{% endblock %}
