@@ -71,7 +71,7 @@ class ProductRepository extends ServiceEntityRepository
 
 
 // return product which no product event for an agency
-    public function findProductWithoutEvent($agency,$start,$end)
+    public function findProductWithoutEvent($agency, $start, $end)
     {
         $qb = $this->createQueryBuilder('p');
         $qb->leftJoin('p.productEvents', 'pe')
@@ -79,14 +79,11 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('a.id = :agency')
             ->andWhere('pe.dateBegin NOT BETWEEN :start AND :end')
             ->andWhere('pe.dateEnd NOT BETWEEN :start AND :end')
-            // pe.product is null
-            // ->orWhere('pe.product is null')
             ->setParameter('agency', $agency)
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->orderBy('p.label', 'ASC');
 
-            
 
         return $qb->getQuery()->getResult();
 

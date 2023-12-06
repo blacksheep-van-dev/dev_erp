@@ -67,65 +67,48 @@ class BookingController extends AbstractController
             $start = $arrayData['dateDepart'];
             $end = $arrayData['dateRetour'];
 
-            $start = date('Y-m-d H:i:s', strtotime($start));
-            $end = date('Y-m-d H:i:s', strtotime($end));
+            $start = date('Y-m-d H:i', strtotime($start));
+            $end = date('Y-m-d H:i', strtotime($end));
 
             // Agence
           
             $agency = $entityManager->getRepository(Agency::class)->find($agStart);
 
-           
+     
+            $products = $agency->getProducts();
 
-            $products = $entityManager->getRepository(Product::class)->findProductWithoutEvent(
-                $agency,
-                $start,
-                $end
-            );
-
-           // products findProductByCategory
-            // $products = $entityManager->getRepository(Product::class)->findProductByCategory(
-            //     $agency
-            // );
-
-            // dd($products);
-            
-
+       
+         
             // return array
             $array = [];
             foreach ($products as $product) {
 
+                // check if a product event is already created for this product id 
+                $productEvent = $entityManager->getRepository(ProductEvent::class)->findOneBy([
+                    'product' => $product->getId(),
+                    // dates convert to DateTimeImmutable
+                    'dateBegin' => new \DateTimeImmutable($start),
+                    'dateEnd' => new \DateTimeImmutable($end),
+                ]);
 
-                // // chcek if product has product event for this agency
-                // $productEvent = $entityManager->getRepository(ProductEvent::class)->findProductEventByProductAndAgency(
-                //     $product,
-                //     $agency,
-                //     $start,
-                //     $end
-                // );
+                // if no product event
+                if (!$productEvent) {
+                    // add product to array
+                    $array[] = [
+                        'id' => $product->getId(),
+                        'label' => $product->getLabel(),
+                        'category' => $product->getProductCategory()->getLabel(),
+                        'model' => $product->getModel()->getLabel(),
+                        // 'agency' => $product->getAgency()->getName(),
+                        // options stock
+                        // 'optionsStock' => $product->getOptionStocks(),
+                    ];
+                }
 
-                // dd($productEvent);
-
-
-
-
-
-
-                $array[] = [
-                    'id' => $product->getId(),
-                    'label' => $product->getLabel(),
-                    'category' => $product->getProductCategory()->getLabel(),
-                    'model' => $product->getModel()->getLabel(),
-                    // 'agency' => $product->getAgency()->getName(),
-                    // options stock
-                    // 'optionsStock' => $product->getOptionStocks(),
-                ];
+                
             }
 
 
-           
-            
-
-      
             
         }
 

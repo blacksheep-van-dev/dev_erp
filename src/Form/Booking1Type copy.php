@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Booking;
 use App\Entity\Option;
 use App\Entity\User;
-use Onlinq\FormCollectionBundle\Form\OnlinqCollectionType;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 //entitytype
 use Symfony\Component\Form\AbstractType;
@@ -47,24 +47,7 @@ class Booking1Type extends AbstractType
                 'choice_label' => 'email',
             ])
 
-            // products collection
-            ->add('products', OnlinqCollectionType::class, [
-                'entry_type' => ProductType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'allow_move' => true,
-                'required' => false,
-            ])
-            // activities collection
-            ->add('activities', OnlinqCollectionType::class, [
-                'entry_type' => ActivityType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'allow_move' => true,
-                'required' => false,
-            ])
+
 
 
             //options entity type
@@ -77,14 +60,14 @@ class Booking1Type extends AbstractType
             // ])
 
             // options collection
-            ->add('options', OnlinqCollectionType::class, [
-                'entry_type' => OptionType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'allow_move' => true,
-                'required' => false,
-            ])
+            // ->add('options', OnlinqCollectionType::class, [
+            //     'entry_type' => OptionType::class,
+            //     'entry_options' => ['label' => false],
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'allow_move' => true,
+            //     'required' => false,
+            // ])
 
 
             //Collection $bookingItems BookingItemType
