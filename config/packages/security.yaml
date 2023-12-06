@@ -26,16 +26,19 @@ security:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\LoginFormAuthenticator
+            entry_point: App\Security\AuthenticationEntryPoint
+            access_denied_handler: App\Security\AccessDeniedHandler
+
             logout:
                 path: app_logout
                 # where to redirect after logout
                 target: app_login
 
-            remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800
-                path: /
-                always_remember_me: true
+            # remember_me:
+            #     secret: '%kernel.secret%'
+            #     lifetime: 604800
+            #     path: /
+            #     always_remember_me: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -48,12 +51,13 @@ security:
     access_control:
         #  login
           - { path: ^/api/login, roles: PUBLIC_ACCESS }
-          - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        #   - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
           - { path: /login, roles: PUBLIC_ACCESS }
           - { path: /register, roles: PUBLIC_ACCESS }
           - { path: /reset-password, roles: PUBLIC_ACCESS }
-          - { path: ^/, role: ROLE_USER }
+        #   - { path: ^/, role: ROLE_USER }
 
+    role_hierarchy:
 
 when@test:
     security:
