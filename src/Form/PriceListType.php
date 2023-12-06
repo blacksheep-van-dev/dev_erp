@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 // priceListPriceType
 use App\Form\PriceListPriceType;
-use Onlinq\FormCollectionBundle\Form\OnlinqCollectionType;
+
 
 
 class PriceListType extends AbstractType
@@ -31,21 +31,15 @@ class PriceListType extends AbstractType
             //     'multiple' => true,
             //     'expanded' => true,
             // ])
-            ->add('priceListPrices', OnlinqCollectionType::class, [
+   
+            ->add('priceListPrices', PriceListPriceType::class, [
+                'label' => false,
                 'entry_type' => PriceListPriceType::class,
+                'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'prototype' => true,
-                'prototype_name' => '__name__',
-                'entry_options' => [
-                    'label' => false,
-                ],
-                'mapped' => true,
-              
-                
             ])
-            
             
    
             

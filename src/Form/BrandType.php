@@ -3,10 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Brand;
+use App\Entity\BrandModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Onlinq\FormCollectionBundle\Form\OnlinqCollectionType;
+//entitytype
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class BrandType extends AbstractType
 {
@@ -14,13 +17,14 @@ class BrandType extends AbstractType
     {
         $builder
             ->add('label')
-            ->add('Models', OnlinqCollectionType::class, [
-                'entry_type' => BrandModelType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'allow_move' => true,
+            ->add('Models', EntityType::class, [
+                'class' => BrandModel::class,
+                'choice_label' => 'label',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
             ])
+        
         ;
     }
 

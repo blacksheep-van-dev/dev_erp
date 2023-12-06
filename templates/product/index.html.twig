@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Type</th>
                 <th>Label</th>
+                <th>Agency</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ product.id }}</td>
                 <td>{{ product.type }}</td>
                 <td>{{ product.label }}</td>
+                <td>{{ product.agency }}</td>
                 <td>
                     <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
                     <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>

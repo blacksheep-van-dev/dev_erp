@@ -119,7 +119,7 @@ document.getElementById('submit').addEventListener('click', function(e) {
         for (var i in data.data) {
             html += '<div class="form-group mt-2">';
             html += '<label for="agencies">Catégorie du véhicule / produit</label>';
-            html += '<select class="form-control" id="vehicule" name="vehicule">';
+            html += '<select id="cat" class="form-control" id="vehicule" name="vehicule">';
             html += '<option value="'+data.data[i].id+'">'+data.data[i].category+'</option>';
             html += '</select>';
             html += '</div>';
@@ -129,6 +129,57 @@ document.getElementById('submit').addEventListener('click', function(e) {
         document.getElementById('vehicule_cat').innerHTML = html;
 
 
+        // on change cat which is not already in the dom
+        document.getElementById('cat').addEventListener('change', function(e) {
+            e.preventDefault();
+            var cat = document.getElementById('cat').value;
+            console.log(cat);
+
+            // fetch api
+            fetch('/booking/findProductWithoutEvent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    agenceDepart: agenceDepart,
+                    agenceRetour: agenceRetour,
+                    dateDepart: dateDepart,
+                    dateRetour: dateRetour,
+                    cat: cat
+                })
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data.data);
+                var html = '';
+
+                // lopp through array of objects    
+                for (var i in data.data) {
+                    html += '<div class="form-group mt-2">';
+                    html += '<label for="agencies">Véhicule / produit</label>';
+                    html += '<select class="form-control" id="vehicule" name="vehicule">';
+                    html += '<option value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                    html += '</select>';
+                    html += '</div>';
+                }
+
+                // append html
+                document.getElementById('vehicule_cat').innerHTML = html;
+
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
+
+        })
+        
+        
+
+
+
     })
 
 
@@ -136,54 +187,6 @@ document.getElementById('submit').addEventListener('click', function(e) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    // fetch url
-/*
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/booking/findProductWithoutEvent');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
-            console.log('DATA:'+data);
-            var html = '';
-
-            // loop on data
-            for (var i in data) {
-                html += '<div class="form-group mt-2">';
-                html += '<label for="agencies">Choix du véhicule</label>';
-                html += '<select class="form-control" id="vehicule" name="vehicule">';
-                html += '<option value="'+data[i].id+'">'+data[i].id+'</option>';
-                html += '</select>';
-                html += '</div>';
-            }
-           
-           
-
-            // append html
-            document.getElementById('vehicule_cat').innerHTML = html;
-      
-      
-        }
-    };
-    var requestBody = JSON.stringify({
-        agenceDepart: agenceDepart,
-        agenceRetour: agenceRetour,
-        dateDepart: dateDepart,
-        dateRetour: dateRetour
-    });
-    xhr.send(requestBody);
-    */
 });
 
 
