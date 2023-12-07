@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ActivityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {
@@ -34,13 +36,17 @@ class Activity
     #[ORM\OneToMany(mappedBy: 'activity', targetEntity: BookingItem::class)]
     private Collection $bookingItems;
 
-    #[ORM\ManyToMany(targetEntity: Booking::class, mappedBy: 'activities')]
-    private Collection $bookings;
+    // #[ORM\ManyToMany(targetEntity: Booking::class, mappedBy: 'activities')]
+    
+    // private Collection $bookings;
+
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    private ?BookingItem $bookingItem = null;
 
     public function __construct()
     {
         $this->bookingItems = new ArrayCollection();
-        $this->bookings = new ArrayCollection();
+        // $this->bookings = new ArrayCollection();
     }
 
 
@@ -147,29 +153,41 @@ class Activity
         return $this;
     }
 
-    /**
-     * @return Collection<int, Booking>
-     */
-    public function getBookings(): Collection
+    // /**
+    //  * @return Collection<int, Booking>
+    //  */
+    // public function getBookings(): Collection
+    // {
+    //     return $this->bookings;
+    // }
+
+    // public function addBooking(Booking $booking): static
+    // {
+    //     if (!$this->bookings->contains($booking)) {
+    //         $this->bookings->add($booking);
+    //         $booking->addActivity($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeBooking(Booking $booking): static
+    // {
+    //     if ($this->bookings->removeElement($booking)) {
+    //         $booking->removeActivity($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    public function getBookingItem(): ?BookingItem
     {
-        return $this->bookings;
+        return $this->bookingItem;
     }
 
-    public function addBooking(Booking $booking): static
+    public function setBookingItem(?BookingItem $bookingItem): static
     {
-        if (!$this->bookings->contains($booking)) {
-            $this->bookings->add($booking);
-            $booking->addActivity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBooking(Booking $booking): static
-    {
-        if ($this->bookings->removeElement($booking)) {
-            $booking->removeActivity($this);
-        }
+        $this->bookingItem = $bookingItem;
 
         return $this;
     }

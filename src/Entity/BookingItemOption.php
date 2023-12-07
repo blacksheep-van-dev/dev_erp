@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BookingItemOptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookingItemOptionRepository::class)]
+#[ApiResource]
 class BookingItemOption
 {
     #[ORM\Id]

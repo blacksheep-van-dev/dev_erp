@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AgencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: AgencyRepository::class)]
 class Agency
 {
@@ -178,35 +180,35 @@ class Agency
         return $this;
     }
 
-    /**
-     * @return Collection<int, Option>
-     */
-    public function getOptions(): Collection
-    {
-        return $this->options;
-    }
+    // /**
+    //  * @return Collection<int, Option>
+    //  */
+    // public function getOptions(): Collection
+    // {
+    //     return $this->options;
+    // }
 
-    public function addOption(Option $option): static
-    {
-        if (!$this->options->contains($option)) {
-            $this->options->add($option);
-            $option->setAgency($this);
-        }
+    // public function addOption(Option $option): static
+    // {
+    //     if (!$this->options->contains($option)) {
+    //         $this->options->add($option);
+    //         $option->setAgency($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeOption(Option $option): static
-    {
-        if ($this->options->removeElement($option)) {
-            // set the owning side to null (unless already changed)
-            if ($option->getAgency() === $this) {
-                $option->setAgency(null);
-            }
-        }
+    // public function removeOption(Option $option): static
+    // {
+    //     if ($this->options->removeElement($option)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($option->getAgency() === $this) {
+    //             $option->setAgency(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, ProductCategory>
