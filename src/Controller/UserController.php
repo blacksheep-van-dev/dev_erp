@@ -81,6 +81,16 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
 
+            // agencies entity type
+
+            $agencies = $form->get('agencies')->getData();
+            foreach ($agencies as $agency) {
+                $user->addAgency($agency);
+                        // agency addUser
+                $agency->addUser($user);
+                $entityManager->persist($agency);
+            }
+
 
 
             // upload picture profile

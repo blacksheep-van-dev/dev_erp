@@ -3,10 +3,11 @@
     "app": {
       "js": [
         "/build/runtime.js",
-        "/build/vendors-_DEV_DEV_-_2024_dev_erp_node_modules_arkounay_ux-collection_dist_controller_js-_DEV_D-9eaa8a.js",
+        "/build/vendors-_DEV_DEV_-_2024_dev_erp_node_modules_arkounay_ux-collection_dist_controller_js-_DEV_D-57abc1.js",
         "/build/app.js"
       ],
       "css": [
+        "/build/vendors-_DEV_DEV_-_2024_dev_erp_node_modules_arkounay_ux-collection_dist_controller_js-_DEV_D-57abc1.css",
         "/build/app.css"
       ]
     }

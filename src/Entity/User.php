@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Booking::class)]
     private Collection $bookings;
 
-    #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist', 'remove'])]
     private Collection $agencies;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Agency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 //password
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+//EntityType
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class UserType extends AbstractType
 {
@@ -56,6 +59,24 @@ class UserType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
+            ->add('agencies', EntityType::class, [
+                'label' => 'Choisir une agence',
+                'multiple' => true,
+                'class' => Agency::class,
+                // choice label nom et prenom
+                // 'choice_label' => 'nom',
+                'choice_label' => 'name',
+                // expanded => true
+                'expanded' => true,
+
+                "required" => false,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                //read only
+                'disabled' => true,
+            ])
+            
         ;
     }
 

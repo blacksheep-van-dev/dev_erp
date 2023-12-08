@@ -13,6 +13,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Arkounay\Bundle\UxCollectionBundle\Form\UxCollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+// auto complete
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AgencyType extends AbstractType
 {
@@ -36,26 +38,27 @@ class AgencyType extends AbstractType
                 'mapped' => true,
 
             ])
-            // users UxCollectionType
-            ->add('users', UxCollectionType::class, [
-                'entry_type' => UserType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'label' => 'Utilisateurs',
-                'by_reference' => false,
-                'prototype' => true,
-                'prototype_name' => '__user__',
-                'entry_options' => [
-                    'label' => false,
-                ],
+        //     ->add('users', UserAutocompleteField::class,
+        //   )   
+            
+            //  add list of existing users
+            ->add('users', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
+                'multiple' => true,
+                'expanded' => false,
+                'mapped' => true,
                 'attr' => [
-                    'class' => 'user-collection',
+                    'class' => 'form-control',
                 ],
+                'required' => false,
+                'autocomplete' => true,
             ])
 
+          
 
 
-            //
+            
         ;
     }
 

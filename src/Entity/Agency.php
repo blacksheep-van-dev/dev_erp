@@ -51,7 +51,7 @@ class Agency
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'agencies')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'agencies', cascade: ['persist', 'remove'])]
     private Collection $users;
 
     public function __construct()
