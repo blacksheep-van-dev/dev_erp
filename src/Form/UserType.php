@@ -11,6 +11,8 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 //file upload
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+//password
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UserType extends AbstractType
 {
@@ -32,7 +34,14 @@ class UserType extends AbstractType
 
 
 
-            ->add('password')
+            ->add('password', PasswordType::class, [
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'class' => 'form-control',
+                ],
+            ])
             ->add('firstName')
             ->add('LastName')
             ->add('isVerified')
