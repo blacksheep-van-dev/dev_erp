@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\CallbackTransformer;
 // use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+//file upload
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class UserType extends AbstractType
 {
@@ -34,6 +36,17 @@ class UserType extends AbstractType
             ->add('firstName')
             ->add('LastName')
             ->add('isVerified')
+            //picure upload
+            ->add('picture', FileType::class, [
+                'label' => 'Picture (JPG, PNG, JPEG file)',
+                'mapped' => false,
+                'required' => false,
+                'multiple' => false,
+                'attr' => [
+                    'accept' => 'image/*',
+                    'class' => 'form-control',
+                ],
+            ])
         ;
     }
 

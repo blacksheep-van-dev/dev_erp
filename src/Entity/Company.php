@@ -23,6 +23,18 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Agency::class)]
     private Collection $Agencies;
 
+    #[ORM\Column(length: 255)]
+    private ?string $siren = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $siret = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $creationDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tvaintra = null;
+
     public function __construct()
     {
         $this->Agencies = new ArrayCollection();
@@ -71,6 +83,54 @@ class Company
                 $agency->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSiren(): ?string
+    {
+        return $this->siren;
+    }
+
+    public function setSiren(string $siren): static
+    {
+        $this->siren = $siren;
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(string $siret): static
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeImmutable
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(?\DateTimeImmutable $creationDate): static
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getTvaintra(): ?string
+    {
+        return $this->tvaintra;
+    }
+
+    public function setTvaintra(?string $tvaintra): static
+    {
+        $this->tvaintra = $tvaintra;
 
         return $this;
     }

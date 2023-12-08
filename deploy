@@ -1,0 +1,17 @@
+--
+sudo mv dev_erp/ old_src
+
+gh auth login
+
+
+https://github.com/login/device
+ 
+gh repo clone blacksheep-van-dev/dev_erp dev_erp -- --branch AWS
+ 
+ 
+ sudo cp old_src/.env dev_erp/.env
+ 
+  cd dev_erp/
+ composer require symfony/apache-pack
+ 
+ php bin/console lexik:jwt:generate-keypair

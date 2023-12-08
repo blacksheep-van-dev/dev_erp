@@ -3,12 +3,13 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>Gestion des utilisateurs</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th></th>
                 <th>Email</th>
                 <th>Roles</th>
                 <th>Password</th>
@@ -22,6 +23,7 @@
         {% for user in users %}
             <tr>
                 <td>{{ user.id }}</td>
+                <td><img class="imgProfile" src="{{ asset('uploads/' ~ user.picture) }}"/></td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.password }}</td>
@@ -41,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    <a class="btn btn-sm btn-success" href="{{ path('app_user_new') }}">Ajouter un utilisateur</a>
 {% endblock %}

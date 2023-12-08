@@ -20,3 +20,13 @@ body {
   margin: 0 auto;
   max-height: 700px;
 }
+
+.imgProfile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit:contain;
+  /* drop shadow */
+  box-shadow: 0 0 5px rgba(161, 161, 161, 0.5);
+}
+

@@ -15,7 +15,12 @@ class CompanyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', null, ['label'=>'Nom de la société'])
+            ->add('siren', null, ['label'=>'Siren'])
+            ->add('siret', null, ['label'=>'Siret'])
+            ->add('creationDate', null, ['label'=>'Date de création'])
+            ->add('tvaintra', null, ['label'=>'TVA intra'])
+            
             // add Agencies choice
             ->add('Agencies', EntityType::class, [
                 'class' => Agency::class,
@@ -23,6 +28,7 @@ class CompanyType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'mapped' => true,
+                'label' => 'Agences',
 
 
             ])

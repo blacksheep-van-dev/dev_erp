@@ -45,9 +45,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Booking::class)]
     private Collection $bookings;
 
+    #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users')]
+    private Collection $agencies;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
+        $this->agencies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -182,6 +189,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $booking->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Agency>
+     */
+    public function getAgencies(): Collection
+    {
+        return $this->agencies;
+    }
+
+    public function addAgency(Agency $agency): static
+    {
+        if (!$this->agencies->contains($agency)) {
+            $this->agencies->add($agency);
+            $agency->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgency(Agency $agency): static
+    {
+        if ($this->agencies->removeElement($agency)) {
+            $agency->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
