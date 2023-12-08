@@ -7,7 +7,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: solid #eee;
+  background-color: #fff;
 }
+
 .formLogin {
   padding: 5px;
 }
@@ -30,10 +33,31 @@ body {
   box-shadow: 0 0 5px rgba(161, 161, 161, 0.5);
 }
 
-/* h1{
-  font-size: 0.8rem;
-  font-weight: 600;
+h1{
+  font-size: 28px !important;
+  font-weight: 300;
   color: #000;
-  margin: 0;
-  padding: 0;
-} */
+  margin-bottom:10px;
+}
+
+.offcanvas-body li{
+  padding: 10px 0px;
+  list-style: none;
+}
+.offcanvas-body li a{
+  text-decoration: none;
+  color:rgb(44, 44, 44);
+}
+.offcanvas-body li a:hover{
+  color:rgb(44, 44, 44);
+}
+
+ .title{
+font-weight: 800;
+text-transform: uppercase;
+}
+
+
+hr{
+ color:#cacaca;
+}
