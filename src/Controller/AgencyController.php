@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\FileUploader;
 
 #[Route('/agency')]
 class AgencyController extends AbstractController
@@ -23,13 +24,22 @@ class AgencyController extends AbstractController
     }
 
     #[Route('/new', name: 'app_agency_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         $agency = new Agency();
         $form = $this->createForm(AgencyType::class, $agency);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $profileUrl = $form->get('picture')->getData();
+            if ($profileUrl) {
+                $profileUrlName = $fileUploader->upload($profileUrl);
+                $agency->setPicture($profileUrlName);
+            }
+
+
+
             $entityManager->persist($agency);
             $entityManager->flush();
 
@@ -51,12 +61,21 @@ class AgencyController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_agency_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Agency $agency, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Agency $agency, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         $form = $this->createForm(AgencyType::class, $agency);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $profileUrl = $form->get('picture')->getData();
+            if ($profileUrl) {
+                $profileUrlName = $fileUploader->upload($profileUrl);
+                $agency->setPicture($profileUrlName);
+            }
+
+
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_agency_index', [], Response::HTTP_SEE_OTHER);

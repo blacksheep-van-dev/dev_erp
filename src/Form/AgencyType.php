@@ -15,9 +15,11 @@ use Arkounay\Bundle\UxCollectionBundle\Form\UxCollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 // auto complete
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-//TextareaType
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-//TinymceType
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\UX\Dropzone\Form\DropzoneType;
+
+
+
 
 
 class AgencyType extends AbstractType
@@ -25,17 +27,45 @@ class AgencyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, ['label' => 'Nom de l\'agence'])
+            ->add('name',  TextType::class, [
+                'label' => 'Nom',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
+          
+            
             // type select Agence Propre ou Franchise ChoiceType
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Agence Propre' => 'Agence Propre',
                     'Franchise' => 'Franchise',
                 ],
+                'attr' => [
+                    'class' => 'form-control',
+                ],
             ])
-            ->add('description', TextareaType::class, [
-                'attr' => ['id' => 'agenceDescription'],
+
+
+            //picture DropzoneType
+            ->add('picture', DropzoneType::class, [
+                'label' => 'Visuel',
+                'mapped' => false,
                 'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+               
+            ])
+
+
+            ->add('description', CKEditorType::class, [
+                'label' => 'Description',
+                'config' => [
+                    'uiColor' => '#ffffff',
+                    'toolbar' => 'full',
+                    'required' => false,
+                ],
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,
@@ -43,6 +73,11 @@ class AgencyType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'mapped' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'required' => true,
+                'label' => 'Société parente',
 
             ])
         //     ->add('users', UserAutocompleteField::class,

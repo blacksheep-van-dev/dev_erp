@@ -73,6 +73,9 @@ class Agency
     #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'agency')]
     private Collection $addresses;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -402,6 +405,18 @@ class Agency
         if ($this->addresses->removeElement($address)) {
             $address->removeAgency($this);
         }
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }

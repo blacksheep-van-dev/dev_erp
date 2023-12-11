@@ -3,10 +3,12 @@
 {% block title %}New Agency{% endblock %}
 
 {% block body %}
-    <h1>Create new Agency</h1>
+    <h1>Créer une agence</h1>
+
+    <a class="btn btn-sm btn-secondary" href="{{ path('app_agency_index') }}">Retour à la liste</a>
 
     {{ include('agency/_form.html.twig') }}
 
-    <a href="{{ path('app_agency_index') }}">back to list</a>
+    
     
 {% endblock %}

@@ -1,7 +1,4 @@
 {
-  "build/app.css": "/build/app.css",
-  "build/app.js": "/build/app.js",
-  "build/runtime.js": "/build/runtime.js",
-  "build/vendors-_DEV_DEV_-_2024_dev_erp_node_modules_arkounay_ux-collection_dist_controller_js-_DEV_D-57abc1.css": "/build/vendors-_DEV_DEV_-_2024_dev_erp_node_modules_arkounay_ux-collection_dist_controller_js-_DEV_D-57abc1.css",
-  "build/vendors-_DEV_DEV_-_2024_dev_erp_node_modules_arkounay_ux-collection_dist_controller_js-_DEV_D-57abc1.js": "/build/vendors-_DEV_DEV_-_2024_dev_erp_node_modules_arkounay_ux-collection_dist_controller_js-_DEV_D-57abc1.js"
+  "build/app.js": "/build/app.7055fa9f.js",
+  "build/runtime.js": "/build/runtime.62bcf186.js"
 }

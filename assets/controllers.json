@@ -17,6 +17,34 @@
                 }
             }
         },
+        "@arkounay/ux-media": {
+            "media": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "@arkounay/ux-media/src/style.css": true
+                }
+            },
+            "upload": {
+                "enabled": true,
+                "fetch": "eager"
+            },
+            "crop": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "cropperjs/dist/cropper.min.css": true,
+                    "@arkounay/ux-media/src/crop_style.css": true
+                }
+            },
+            "bootstrap_modal": {
+                "enabled": false,
+                "fetch": "eager",
+                "autoimport": {
+                    "@arkounay/ux-media/src/bootstrap_modal.scss": true
+                }
+            }
+        },
         "@symfony/ux-autocomplete": {
             "autocomplete": {
                 "enabled": true,
@@ -24,6 +52,15 @@
                 "autoimport": {
                     "tom-select/dist/css/tom-select.default.css": true,
                     "tom-select/dist/css/tom-select.bootstrap5.css": false
+                }
+            }
+        },
+        "@symfony/ux-dropzone": {
+            "dropzone": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "@symfony/ux-dropzone/dist/style.min.css": true
                 }
             }
         }

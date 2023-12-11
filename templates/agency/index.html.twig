@@ -1,35 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}agency index{% endblock %}
+{% block title %}agency index
+{% endblock %}
 
 {% block body %}
-    <h1>Gestion des Agences</h1>
+	<h1>Gestion des Agences</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for agency in agencies %}
-            <tr>
-                <td>{{ agency.id }}</td>
-                <td>{{ agency.name }}</td>
-                <td>
-                    <a class="btn btn-sm btn-info text-light" href="{{ path('app_agency_show', {'id': agency.id}) }}">Voir</a>
-                    <a class="btn btn-sm btn-warning"  href="{{ path('app_agency_edit', {'id': agency.id}) }}">Editer</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<a class="btn btn-sm btn-success" href="{{ path('app_agency_new') }}">Créer une agence</a>
 
-    <a class="btn btn-sm btn-success" href="{{ path('app_agency_new') }}">Créer une agence</a>
+	<div class="container-fluid mt-4">
+		<div class="row no-gutters">
+
+			{% for agency in agencies %}
+
+				<div class="card m-2" style="width: 18rem;">
+					<img class="card-img-top" src="{{ asset('uploads/' ~ agency.picture) }}" alt="Card image cap">
+					<div class="card-body">
+						<h5 class="card-title">{{agency.name}}</h5>
+						<p class="card-text"></p>
+						<a class="btn btn-sm btn-info text-light" href="{{ path('app_agency_show', {'id': agency.id}) }}">Voir</a>
+						<a class="btn btn-sm btn-danger" href="{{ path('app_agency_edit', {'id': agency.id}) }}">Editer</a>
+					</div>
+				</div>
+
+
+			{% endfor %}
+
+		</div>
+	</div>
+
+
 {% endblock %}

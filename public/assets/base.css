@@ -77,5 +77,44 @@ a:hover{
 .navbar-brand img{
   width: 100px;
 
-
 }
+
+label{
+  font-weight: 600;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+input{
+  margin-bottom: 10px;;
+}
+
+/* {# replace radio buttons with buttons #} */
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"] + label {
+    display: inline-block;
+    margin: 0 0 -1px;
+    padding: 7px 15px;
+    font-weight: 600;
+    text-align: center;
+    color: #bbb;
+    border: 1px solid transparent;
+}
+
+input[type="radio"] + label:hover {
+    color: #888;
+    cursor: pointer;
+}
+
+input[type="radio"] + label:active,
+input[type="radio"]:checked + label {
+    background: #79da4f;
+    border: 1px solid #ddd;  
+    color: #fff;
+    cursor: pointer;
+}
+
+

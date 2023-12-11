@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Agency{% endblock %}
+{% block title %}Edit Agency
+{% endblock %}
 
 {% block body %}
-    <h1>Edition de l'agence</h1>
+	<h1>Edition de l'agence</h1>
+	<a class="btn btn-sm btn-secondary" href="{{ path('app_agency_index') }}">Retour à la liste</a>
+	{{ include('agency/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    {{ include('agency/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a class="btn btn-sm btn-info" href="{{ path('app_agency_index') }}">Retour à la liste</a>
+	{{ include('agency/_delete_form.html.twig') }}
 
-    {{ include('agency/_delete_form.html.twig') }}
-    
 {% endblock %}
