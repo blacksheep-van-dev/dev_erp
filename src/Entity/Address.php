@@ -35,8 +35,8 @@ class Address
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: agency::class, inversedBy: 'addresses')]
-    private Collection $agency;
+    // #[ORM\ManyToMany(targetEntity: agency::class, inversedBy: 'addresses')]
+    // private Collection $agency;
 
     #[ORM\ManyToMany(targetEntity: company::class, inversedBy: 'addresses')]
     private Collection $company;
