@@ -58,7 +58,7 @@
 node_modules
 node_modules
 
-public/bundles/
+# public/bundles/
 
 /public/uploads/
 
