@@ -15,7 +15,6 @@ class AuthenticationSuccessListener
     {
 
 
-
         $data = $event->getData();
         $user = $event->getUser();
 
@@ -29,8 +28,6 @@ class AuthenticationSuccessListener
         $response->setStatusCode(200);
 
 
-
-
         // set custom data
 
         $data['user'] = array(
@@ -42,8 +39,6 @@ class AuthenticationSuccessListener
             'agencies' => $user->getAgenciesName(),
 
             
-
-
         );
 
         $event->setData($data);

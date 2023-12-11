@@ -30,6 +30,14 @@ class FileUploader
 
     public function getTargetDirectory(): string
     {
+
+
+        // if directory not existing, create it
+        if (!file_exists($this->targetDirectory)) {
+            mkdir($this->targetDirectory, 0777, true);
+        }
+
+
         return $this->targetDirectory;
     }
 }
