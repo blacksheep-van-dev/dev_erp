@@ -272,4 +272,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+    // return agencies names of user
+    public function getAgenciesName(): array
+    {
+        $agenciesName = [];
+        foreach ($this->agencies as $agency) {
+            $agenciesName[] = $agency->getName();
+        }
+        return $agenciesName;
+    }
+
+    
+    
+
+
 }
