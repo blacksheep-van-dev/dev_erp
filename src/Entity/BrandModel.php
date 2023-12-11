@@ -7,9 +7,13 @@ use App\Repository\BrandModelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BrandModelRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allBrandModel']],
+    denormalizationContext: ['groups' => ['write:BrandModel']],
+)]
 class BrandModel
 {
     #[ORM\Id]
@@ -17,9 +21,11 @@ class BrandModel
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allBrandModel'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Groups(['read:allBrandModel'])]
     #[ORM\ManyToOne(inversedBy: 'Models')]
     private ?Brand $brand = null;
 

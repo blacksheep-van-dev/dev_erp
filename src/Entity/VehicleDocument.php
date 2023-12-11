@@ -6,9 +6,13 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\VehicleDocumentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VehicleDocumentRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allVehicleDocument']],
+    denormalizationContext: ['groups' => ['write:VehicleDocument']],
+)]
 class VehicleDocument
 {
     #[ORM\Id]
@@ -19,21 +23,27 @@ class VehicleDocument
     #[ORM\Column]
     private ?\DateTimeImmutable $CreatedAt = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $UpdatedAt = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\Column(length: 255)]
     private ?string $immatriculation = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $immatriculationDate = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\Column(length: 255)]
     private ?string $imageFront = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageBack = null;
 

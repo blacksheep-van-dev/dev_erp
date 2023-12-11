@@ -7,9 +7,13 @@ use App\Repository\BookingItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookingItemRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allBookingItem']],
+    denormalizationContext: ['groups' => ['write:BookingItem']],
+)]
 class BookingItem
 {
     #[ORM\Id]
@@ -17,24 +21,31 @@ class BookingItem
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allBookingItem'])]
     #[ORM\Column]
     private ?int $price = null;
 
+    #[Groups(['read:allBookingItem'])]
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[Groups(['read:allBookingItem'])]
     #[ORM\ManyToOne(inversedBy: 'bookingItems')]
     private ?Product $product = null;
 
+    #[Groups(['read:allBookingItem'])]
     #[ORM\ManyToOne(inversedBy: 'bookingItems')]
     private ?Activity $activity = null;
 
+    #[Groups(['read:allBookingItem'])]
     #[ORM\ManyToOne(inversedBy: 'bookingItems')]
     private ?Insurance $insurance = null;
 
+    #[Groups(['read:allBookingItem'])]
     #[ORM\ManyToOne(inversedBy: 'bookingItems')]
     private ?Booking $booking = null;
 
+    #[Groups(['read:allBookingItem'])]
     #[ORM\OneToMany(mappedBy: 'bookingItem', targetEntity: Activity::class)]
     private Collection $activities;
 

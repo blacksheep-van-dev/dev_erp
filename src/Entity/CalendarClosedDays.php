@@ -6,9 +6,13 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CalendarClosedDaysRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CalendarClosedDaysRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allCalendarClosedDays']],
+    denormalizationContext: ['groups' => ['write:CalendarClosedDays']],
+)]
 class CalendarClosedDays
 {
     #[ORM\Id]
@@ -16,15 +20,19 @@ class CalendarClosedDays
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allCalendarClosedDays'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Groups(['read:allCalendarClosedDays'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $startDate = null;
 
+    #[Groups(['read:allCalendarClosedDays'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $endDate = null;
 
+    #[Groups(['read:allCalendarClosedDays'])]
     #[ORM\ManyToOne(inversedBy: 'calendarClosedDays')]
     private ?Calendar $calendar = null;
 

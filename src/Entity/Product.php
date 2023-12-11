@@ -7,9 +7,13 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allProduct']],
+    denormalizationContext: ['groups' => ['write:Product']],
+)]
 class Product
 {
     #[ORM\Id]
@@ -17,24 +21,31 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allAgency','read:allProduct'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[Groups(['read:allAgency','read:allBookingItem','read:allProduct'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Groups(['read:allAgency','read:allProduct'])]
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?BrandModel $model = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?ProductCategory $productCategory = null;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: BookingItem::class)]
     private Collection $bookingItems;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductEvent::class)]
     private Collection $productEvents;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?VehicleDocument $vehicleDocument = null;
 

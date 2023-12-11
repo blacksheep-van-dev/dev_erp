@@ -7,9 +7,13 @@ use App\Repository\ProductCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allProductCategory']],
+    denormalizationContext: ['groups' => ['write:ProductCategory']],
+)]
 class ProductCategory
 {
     #[ORM\Id]
@@ -17,6 +21,7 @@ class ProductCategory
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allAgency','read:allProduct','read:allProductCategory'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
@@ -31,6 +36,7 @@ class ProductCategory
     #[ORM\ManyToOne(inversedBy: 'productCategory')]
     private ?Agency $agency = null;
 
+    #[Groups(['read:allAgency'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 

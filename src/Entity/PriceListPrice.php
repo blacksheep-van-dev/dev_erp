@@ -5,9 +5,13 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PriceListPriceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PriceListPriceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allPriceListPrice']],
+    denormalizationContext: ['groups' => ['write:PriceListPrice']],
+)]
 class PriceListPrice
 {
     #[ORM\Id]
@@ -15,12 +19,15 @@ class PriceListPrice
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allPriceListPrice'])]
     #[ORM\Column]
     private ?int $price = null;
 
+    #[Groups(['read:allPriceListPrice'])]
     #[ORM\Column]
     private ?int $minimalDuration = null;
 
+    #[Groups(['read:allPriceListPrice'])]
     #[ORM\Column]
     private ?int $maximalDuration = null;
 

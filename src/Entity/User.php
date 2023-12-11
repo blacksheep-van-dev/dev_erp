@@ -10,10 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allUser']],
+    denormalizationContext: ['groups' => ['write:User']],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,6 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allAgency','read:allBookingItem','read:allUser'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -33,28 +38,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Groups(['read:allAgency','read:allUser'])]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
+    #[Groups(['read:allAgency','read:allUser'])]
     #[ORM\Column(length: 255)]
     private ?string $LastName = null;
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[Groups(['read:allUser'])]
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Booking::class)]
     private Collection $bookings;
 
+    #[Groups(['read:allUser'])]
     #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist', 'remove'])]
     private Collection $agencies;
 
+    #[Groups(['read:allUser'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
+
+    #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'user')]
+    private Collection $addresses;
 
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
         $this->agencies = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -228,6 +242,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): static
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): static
+    {
+        if ($this->addresses->removeElement($address)) {
+            $address->removeUser($this);
+        }
 
         return $this;
     }
