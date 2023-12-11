@@ -4,6 +4,7 @@ namespace App\Entity;
 
 // entity
 use App\Entity\Agency;
+use App\Entity\Company;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AddressRepository;
 use Doctrine\Common\Collections\ArrayCollection;
