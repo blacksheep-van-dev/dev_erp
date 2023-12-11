@@ -15,6 +15,10 @@ use Arkounay\Bundle\UxCollectionBundle\Form\UxCollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 // auto complete
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+//TextareaType
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+//TinymceType
+
 
 class AgencyType extends AbstractType
 {
@@ -29,7 +33,9 @@ class AgencyType extends AbstractType
                     'Franchise' => 'Franchise',
                 ],
             ])
-            ->add('description', null, ['label' => 'Description'])
+            ->add('description', TextareaType::class, [
+                'attr' => ['name' => 'editorHTML'],
+            ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,
                 'choice_label' => 'name',
@@ -55,10 +61,6 @@ class AgencyType extends AbstractType
                 'autocomplete' => true,
             ])
 
-          
-
-
-            
         ;
     }
 

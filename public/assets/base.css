@@ -61,3 +61,14 @@ text-transform: uppercase;
 hr{
  color:#cacaca;
 }
+
+.btn-success{
+  background-color:#48c189;
+  border-color:#48c189;
+
+}
+
+a:hover{
+  opacity: 0.8;
+  transition: 0.3s
+}
