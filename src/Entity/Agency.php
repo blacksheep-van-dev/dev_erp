@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allAgency']],
     denormalizationContext: ['groups' => ['write:Agency']],
+    forceEager: false,
 )]
 #[ORM\Entity(repositoryClass: AgencyRepository::class)]
 class Agency

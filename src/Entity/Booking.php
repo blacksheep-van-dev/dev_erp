@@ -9,12 +9,26 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allBooking']],
     denormalizationContext: ['groups' => ['write:Booking']],
 )]
+
+#[Get()]
+#[GetCollection()]
+#[Post(security:"is_granted('ROLE_client') or is_granted('ROLE_callCenter')")]
+#[Patch(security:"is_granted('ROLE_client') or is_granted('ROLE_callCenter')")]
+#[Put(security:"is_granted('ROLE_client') or is_granted('ROLE_callCenter')")]   
+#[Delete()]
+
 class Booking
 {
     #[ORM\Id]
