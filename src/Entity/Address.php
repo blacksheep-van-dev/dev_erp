@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-// entity
 use App\Entity\Agency;
 use App\Entity\Company;
 use App\Entity\User;

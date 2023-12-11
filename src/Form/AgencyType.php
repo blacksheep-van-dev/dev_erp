@@ -34,7 +34,8 @@ class AgencyType extends AbstractType
                 ],
             ])
             ->add('description', TextareaType::class, [
-                'attr' => ['name' => 'editorHTML'],
+                'attr' => ['id' => 'agenceDescription'],
+                'required' => false,
             ])
             ->add('company', EntityType::class, [
                 'class' => Company::class,
