@@ -22,4 +22,6 @@ return [
     Arkounay\Bundle\UxCollectionBundle\ArkounayUxCollectionBundle::class => ['all' => true],
     Arkounay\Bundle\UxMediaBundle\ArkounayUxMediaBundle::class => ['all' => true],
     Symfony\UX\Dropzone\DropzoneBundle::class => ['all' => true],
+    Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
+    ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
 ];
