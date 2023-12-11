@@ -11,6 +11,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -18,6 +24,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['read:allUser']],
     denormalizationContext: ['groups' => ['write:User']],
 )]
+
+#[Get()]
+#[GetCollection()]
+#[Post(security:"is_granted('ROLE_callCenter')")]
+
+#[Patch(security:"is_granted('ROLE_client') 
+            or is_granted('ROLE_superAdmin')")]
+            
+#[Put(security:"is_granted('ROLE_client') 
+            or is_granted('ROLE_superAdmin')")]
+            
+#[Delete(security:"is_granted('ROLE_client') 
+            or is_granted('ROLE_superAdmin')")]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
