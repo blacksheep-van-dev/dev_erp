@@ -36,9 +36,18 @@
 
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-				<button class="btn btn-sm btn-dark mt-2" type="submit">
+				<button class="btn btn-lg btn-dark mt-2" type="submit">
 					Connexion
 				</button>
+				{# span new account / lost password #}
+				<div class="row mt-3">
+					<div class="col-6">
+						<a href="{{ path('app_register') }}" class="text-dark">Créer un compte</a>
+					</div>
+					<div class="col-6 text-end">
+						<a href="" class="text-dark">Mot de passe oublié ?</a>
+					</div>
+				
 			</form>
 
 		</div>
