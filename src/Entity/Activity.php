@@ -8,8 +8,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allActivity']],
+    denormalizationContext: ['groups' => ['write:Activity']],
+)]
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {
@@ -18,28 +22,34 @@ class Activity
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allActivity', 'write:Activity'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Groups(['read:allActivity', 'write:Activity'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['read:allActivity', 'write:Activity'])]
     #[ORM\Column]
     private ?int $price = null;
 
+    #[Groups(['read:allActivity', 'write:Activity'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $dateBegin = null;
 
+    #[Groups(['read:allActivity', 'write:Activity'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $dateEnd = null;
 
+    #[Groups(['read:allActivity', 'write:Activity'])]
     #[ORM\OneToMany(mappedBy: 'activity', targetEntity: BookingItem::class)]
     private Collection $bookingItems;
 
     // #[ORM\ManyToMany(targetEntity: Booking::class, mappedBy: 'activities')]
-    
     // private Collection $bookings;
 
+    #[Groups(['read:allActivity', 'write:Activity'])]
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?BookingItem $bookingItem = null;
 

@@ -8,9 +8,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: InsuranceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allInsurance']],
+    denormalizationContext: ['groups' => ['write:Insurance']],
+)]
 class Insurance
 {
     #[ORM\Id]
@@ -18,12 +22,15 @@ class Insurance
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allBookingItem','read:allInsurance'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Groups(['read:allInsurance'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['read:allInsurance'])]
     #[ORM\Column]
     private ?int $price = null;
 

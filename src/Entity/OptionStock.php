@@ -7,9 +7,13 @@ use App\Repository\OptionStockRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OptionStockRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allOptionStock']],
+    denormalizationContext: ['groups' => ['write:OptionStock']],
+)]
 class OptionStock
 {
     #[ORM\Id]
@@ -17,19 +21,23 @@ class OptionStock
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allAgency','read:allOptionStock'])]
     #[ORM\Column]
     private ?int $quantity = null;
 
 
+    #[Groups(['read:allOptionStock'])]
     #[ORM\ManyToOne(inversedBy: 'optionStocks')]
     private ?Agency $agency = null;
 
     #[ORM\Column]
     private ?bool $enabled = null;
 
+    #[Groups(['read:allAgency','read:allOptionStock'])]
     #[ORM\Column]
     private ?int $price = null;
 
+    #[Groups(['read:allAgency','read:allOptionStock'])]
     #[ORM\ManyToOne(inversedBy: 'optionStocks')]
     private ?Option $options = null;
 

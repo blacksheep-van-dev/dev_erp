@@ -5,9 +5,13 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductEventRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductEventRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allProductEvent']],
+    denormalizationContext: ['groups' => ['write:ProductEvent']],
+)]
 class ProductEvent
 {
     #[ORM\Id]
@@ -15,18 +19,22 @@ class ProductEvent
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allProduct','read:allProductEvent'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'productEvents')]
     private ?Product $product = null;
 
+    #[Groups(['read:allProduct','read:allProductEvent'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $dateBegin = null;
 
+    #[Groups(['read:allProduct','read:allProductEvent'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $dateEnd = null;
 
+    #[Groups(['read:allProduct','read:allProductEvent'])]
     #[ORM\Column(nullable: true)]
     private ?int $km = null;
 

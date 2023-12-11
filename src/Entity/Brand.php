@@ -17,6 +17,7 @@ class Brand
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allBrandModel'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 

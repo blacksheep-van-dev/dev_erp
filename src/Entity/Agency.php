@@ -8,8 +8,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allAgency']],
+    denormalizationContext: ['groups' => ['write:Agency']],
+)]
 #[ORM\Entity(repositoryClass: AgencyRepository::class)]
 class Agency
 {
@@ -18,41 +22,56 @@ class Agency
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allAgency', 'write:Agency','read:allBooking'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\ManyToOne(inversedBy: 'Agencies')]
     private ?Company $company = null;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'bookingAgencySource', targetEntity: Booking::class)]
     private Collection $bookings;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Calendar::class)]
     private Collection $calendars;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: PriceList::class)]
     private Collection $priceLists;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'Agency', targetEntity: Option::class)]
     private Collection $options;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: ProductCategory::class)]
     private Collection $ProductCategories;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class)]
     private Collection $Products;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: OptionStock::class)]
     private Collection $optionStocks;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'agencies', cascade: ['persist', 'remove'])]
     private Collection $users;
+
+    #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'agency')]
+    private Collection $addresses;
 
     public function __construct()
     {
@@ -64,6 +83,7 @@ class Agency
         $this->Products = new ArrayCollection();
         $this->optionStocks = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -355,6 +375,33 @@ class Agency
     public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): static
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->addAgency($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): static
+    {
+        if ($this->addresses->removeElement($address)) {
+            $address->removeAgency($this);
+        }
 
         return $this;
     }

@@ -8,10 +8,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OptionRepository::class)]
 #[ORM\Table(name: '`option`')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allOption']],
+    denormalizationContext: ['groups' => ['write:Option']],
+)]
 class Option
 {
     #[ORM\Id]
@@ -19,21 +23,27 @@ class Option
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allOption'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Groups(['read:allOption'])]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[Groups(['read:allOption'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Groups(['read:allOption'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['read:allOption'])]
     #[ORM\Column]
     private ?int $price = null;
 
+    #[Groups(['read:allOption'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 

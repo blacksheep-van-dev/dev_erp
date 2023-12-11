@@ -6,9 +6,13 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CalendarHourRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CalendarHourRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allCalendarHour']],
+    denormalizationContext: ['groups' => ['write:CalendarHour']],
+)]
 class CalendarHour
 {
     #[ORM\Id]
@@ -16,15 +20,20 @@ class CalendarHour
     #[ORM\Column]
     private ?int $id = null;
 
+
+    #[Groups(['read:allCalendarHour'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[Groups(['read:allCalendarHour'])]
     #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeImmutable $openFrom = null;
 
+    #[Groups(['read:allCalendarHour'])]
     #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeImmutable $openTo = null;
 
+    #[Groups(['read:allCalendarHour'])]
     #[ORM\ManyToOne(inversedBy: 'calendarHours')]
     private ?CalendarDay $day = null;
 

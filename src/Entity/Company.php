@@ -7,9 +7,13 @@ use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allCompany']],
+    denormalizationContext: ['groups' => ['write:Company']],
+)]
 class Company
 {
     #[ORM\Id]
@@ -17,12 +21,14 @@ class Company
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['read:allAgency','read:allCompany'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Agency::class)]
     private Collection $Agencies;
 
+    #[Groups(['read:allAgency','read:allCompany'])]
     #[ORM\Column(length: 255)]
     private ?string $siren = null;
 
@@ -35,9 +41,13 @@ class Company
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tvaintra = null;
 
+    #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'company')]
+    private Collection $addresses;
+
     public function __construct()
     {
         $this->Agencies = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +141,33 @@ class Company
     public function setTvaintra(?string $tvaintra): static
     {
         $this->tvaintra = $tvaintra;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): static
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->addCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): static
+    {
+        if ($this->addresses->removeElement($address)) {
+            $address->removeCompany($this);
+        }
 
         return $this;
     }
