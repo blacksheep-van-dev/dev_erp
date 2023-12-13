@@ -5,12 +5,12 @@ namespace App\Controller;
 use App\Entity\Agency;
 use App\Form\AgencyType;
 use App\Repository\AgencyRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\FileUploader;
 
 #[Route('/agency')]
 class AgencyController extends AbstractController
@@ -24,7 +24,7 @@ class AgencyController extends AbstractController
     }
 
     #[Route('/new', name: 'app_agency_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
+    public function new (Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         $agency = new Agency();
         $form = $this->createForm(AgencyType::class, $agency);
@@ -38,7 +38,17 @@ class AgencyController extends AbstractController
                 $agency->setPicture($profileUrlName);
             }
 
+            // get adresses from form
+            $addresses = $form->get('addresses')->getData();
 
+            
+
+            foreach ($addresses as $address) {
+                $agency->addAddress($address);
+                //address addAgency
+                $address->addAgency($agency);
+                $entityManager->persist($address);
+            }
 
             $entityManager->persist($agency);
             $entityManager->flush();
@@ -73,10 +83,33 @@ class AgencyController extends AbstractController
                 $profileUrlName = $fileUploader->upload($profileUrl);
                 $agency->setPicture($profileUrlName);
             }
+         
+            // manage agency collection of addresses
+            // add new addresses to agency and remove deleted addresses from form
+            $addresses = $form->get('addresses')->getData();
+            foreach ($addresses as $address) {
+                $agency->addAddress($address);
+                $address->addAgency($agency);
+                $entityManager->persist($address);
+            }
+            // remove deleted addresses from agency
+            foreach ($agency->getAddresses() as $address) {
+                // CONVERT TO ARRAY
+                if (!in_array($address, $addresses->toArray())) {
+                    $agency->removeAddress($address);
+                    $address->removeAgency($agency);
+                    $entityManager->persist($address);
+                }
+                
+            }
 
+              
+            
 
-
+            $entityManager->persist($agency);
             $entityManager->flush();
+            
+            
 
             return $this->redirectToRoute('app_agency_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -90,7 +123,7 @@ class AgencyController extends AbstractController
     #[Route('/{id}', name: 'app_agency_delete', methods: ['POST'])]
     public function delete(Request $request, Agency $agency, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$agency->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $agency->getId(), $request->request->get('_token'))) {
             $entityManager->remove($agency);
             $entityManager->flush();
         }

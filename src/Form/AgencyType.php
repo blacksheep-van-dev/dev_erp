@@ -46,6 +46,42 @@ class AgencyType extends AbstractType
                 ],
             ])
 
+            // phone
+            ->add('phone', TextType::class, [
+                'label' => 'Téléphone',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
+
+            //email
+            ->add('email', TextType::class, [
+                'label' => 'Email',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
+
+            //address UxCollectionType
+            ->add('addresses', UxCollectionType::class, [
+                'entry_type' => AddressType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => 'Adresse',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                //add label
+                //minimum of 1 address
+                'min' => 0,
+                //maximum of 5 addresses
+                'max' => 3,
+                //add button label
+                'add_label' => 'Ajouter une adresse',
+                'by_reference' => false,
+                
+            ])
+
 
             //picture DropzoneType
             ->add('picture', DropzoneType::class, [
@@ -95,6 +131,7 @@ class AgencyType extends AbstractType
                 ],
                 'required' => false,
                 'autocomplete' => true,
+                'label' => 'Utilisateurs',
             ])
 
         ;

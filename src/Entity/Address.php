@@ -52,7 +52,7 @@ class Address
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: agency::class, inversedBy: 'addresses')]
+    #[ORM\ManyToMany(targetEntity: agency::class, inversedBy: 'addresses', cascade: ["persist", "remove"])]
     private Collection $agency;
 
     #[ORM\ManyToMany(targetEntity: company::class, inversedBy: 'addresses')]
@@ -67,6 +67,16 @@ class Address
         $this->company = new ArrayCollection();
         $this->user = new ArrayCollection();
     }
+
+
+
+    // to string rerun whole address
+    public function __toString(): string
+    {
+        return $this->street . ' ' . $this->numStreet . ' ' . $this->postalCode . ' ' . $this->city . ' ' . $this->country;
+    }
+
+
 
     public function getId(): ?int
     {

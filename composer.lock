@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "141a0112db496b8c98a9ebf08092efda",
+    "content-hash": "e91d9aeacd8354280c2cf1a0fcca2c96",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2852,6 +2852,51 @@
                 "source": "https://github.com/nelmio/NelmioCorsBundle/tree/2.4.0"
             },
             "time": "2023-11-30T16:41:19+00:00"
+        },
+        {
+            "name": "onlinq/form-collection-bundle",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/onlinq/form-collection-bundle.git",
+                "reference": "a1a5a9c1d61df60236cb6163eb10add60448f64d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/onlinq/form-collection-bundle/zipball/a1a5a9c1d61df60236cb6163eb10add60448f64d",
+                "reference": "a1a5a9c1d61df60236cb6163eb10add60448f64d",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/form": "^4.4|^5.0|^6.0",
+                "symfony/framework-bundle": "^4.4|^5.0|^6.0",
+                "symfony/twig-bundle": "^4.4|^5.0|^6.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Onlinq\\FormCollectionBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Goudriaan",
+                    "email": "tim@onlinq.nl"
+                }
+            ],
+            "description": "Symfony bundle to build forms with Onlinq Form Collection web components",
+            "keywords": [
+                "form-collection"
+            ],
+            "support": {
+                "issues": "https://github.com/onlinq/form-collection-bundle/issues",
+                "source": "https://github.com/onlinq/form-collection-bundle/tree/0.2.1"
+            },
+            "time": "2022-11-17T12:53:41+00:00"
         },
         {
             "name": "oomphinc/composer-installers-extender",

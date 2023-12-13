@@ -30,7 +30,7 @@ class BookingItem
     private ?int $quantity = null;
 
     #[Groups(['read:allBookingItem'])]
-    #[ORM\ManyToOne(inversedBy: 'bookingItems')]
+    #[ORM\ManyToOne(inversedBy: 'bookingItems',cascade : ["persist","remove"])]
     private ?Product $product = null;
 
     #[Groups(['read:allBookingItem'])]

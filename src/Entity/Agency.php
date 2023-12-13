@@ -32,7 +32,7 @@ class Agency
     private ?Company $company = null;
 
     #[Groups(['read:allAgency', 'write:Agency'])]
-    #[ORM\OneToMany(mappedBy: 'bookingAgencySource', targetEntity: Booking::class)]
+    #[ORM\OneToMany(mappedBy: 'bookingAgencySource', targetEntity: Booking::class, cascade: ['persist', 'remove'])]
     private Collection $bookings;
 
     #[Groups(['read:allAgency', 'write:Agency'])]
@@ -52,7 +52,7 @@ class Agency
     private Collection $ProductCategories;
 
     #[Groups(['read:allAgency', 'write:Agency'])]
-    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class)]
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class, cascade: ['persist', 'remove'])]
     private Collection $Products;
 
     #[Groups(['read:allAgency', 'write:Agency'])]
@@ -71,11 +71,17 @@ class Agency
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'agencies', cascade: ['persist', 'remove'])]
     private Collection $users;
 
-    #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'agency')]
+    #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'agency', cascade: ['persist', 'remove'])]
     private Collection $addresses;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
 
     public function __construct()
     {
@@ -418,6 +424,30 @@ class Agency
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }

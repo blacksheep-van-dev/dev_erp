@@ -117,4 +117,9 @@ input[type="radio"]:checked + label {
     cursor: pointer;
 }
 
+.agencyPicture{
+  max-height:50px;
+  max-width:50px;
+  border-radius: 50%;
+}
 

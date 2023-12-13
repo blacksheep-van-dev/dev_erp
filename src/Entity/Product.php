@@ -67,7 +67,7 @@ class Product
     #[ORM\ManyToMany(targetEntity: Booking::class, mappedBy: 'products')]
     private Collection $bookings;
 
-    #[ORM\ManyToOne(inversedBy: 'Products')]
+    #[ORM\ManyToOne(inversedBy: 'Products', cascade : ['persist', 'remove'])]
     private ?Agency $agency = null;
 
     public function __construct()
