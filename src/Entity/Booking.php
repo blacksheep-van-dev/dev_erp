@@ -36,35 +36,35 @@ class Booking
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency','read:allBookingItem','read:allBooking'])]
+    #[Groups(['read:allBookingItem','read:allBooking'])]
     #[ORM\Column(length: 255)]
     private ?string $reference = null;
 
-    #[Groups(['read:allAgency','read:allBookingItem','read:allBooking'])]
+    #[Groups(['read:allBookingItem','read:allBooking'])]
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     private ?User $User = null;
 
-    #[Groups(['read:allAgency','read:allBooking'])]
+    #[Groups(['read:allBooking'])]
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     private ?Agency $bookingAgencySource = null;
 
-    #[Groups(['read:allAgency','read:allBooking'])]
+    #[Groups(['read:allBooking'])]
     #[ORM\ManyToOne]
     private ?Agency $bookingAgencyTarget = null;
 
-    #[Groups(['read:allAgency','read:allBooking'])]
+    #[Groups(['read:allBooking'])]
     #[ORM\OneToMany(mappedBy: 'booking', targetEntity: BookingItem::class, cascade: ['persist', 'remove'])]
     private Collection $bookingItems;
 
-    #[Groups(['read:allAgency','read:allBooking'])]
+    #[Groups(['read:allBooking'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $dateBegin = null;
 
-    #[Groups(['read:allAgency','read:allBooking'])]
+    #[Groups(['read:allBooking'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $dateEnd = null;
 
-    #[Groups(['read:allAgency','read:allBooking'])]
+    #[Groups(['read:allBooking'])]
     #[ORM\ManyToMany(targetEntity: OptionStock::class, inversedBy: 'bookings')]
     private Collection $OptionStocks;
 

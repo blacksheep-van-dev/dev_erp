@@ -9,11 +9,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allAgency']],
     denormalizationContext: ['groups' => ['write:Agency']],
     forceEager: false,
+    paginationItemsPerPage: 2,
 )]
 #[ORM\Entity(repositoryClass: AgencyRepository::class)]
 class Agency
@@ -23,15 +26,15 @@ class Agency
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency', 'write:Agency','read:allBooking'])]
+    #[Groups(['read:allAgency','write:Agency','read:allBooking'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
 
     #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\ManyToOne(inversedBy: 'Agencies')]
     private ?Company $company = null;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'bookingAgencySource', targetEntity: Booking::class)]
     private Collection $bookings;
 
@@ -39,35 +42,27 @@ class Agency
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Calendar::class)]
     private Collection $calendars;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: PriceList::class)]
     private Collection $priceLists;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'Agency', targetEntity: Option::class)]
     private Collection $options;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: ProductCategory::class)]
     private Collection $ProductCategories;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class)]
     private Collection $Products;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: OptionStock::class)]
     private Collection $optionStocks;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'agencies', cascade: ['persist', 'remove'])]
     private Collection $users;
 
@@ -76,6 +71,9 @@ class Agency
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
 
     public function __construct()
     {
@@ -418,6 +416,18 @@ class Agency
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }

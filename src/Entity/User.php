@@ -11,6 +11,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
@@ -24,10 +26,11 @@ use ApiPlatform\Metadata\GetCollection;
     normalizationContext: ['groups' => ['read:allUser']],
     denormalizationContext: ['groups' => ['write:User']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['roles' => 'partial'])]
 
 #[Get()]
 #[GetCollection()]
-#[Post(security:"is_granted('ROLE_callCenter')")]
+#[Post(security:"is_granted('ROLE_callCenter') or is_granted('ROLE_superAdmin')")]
 
 #[Patch(security:"is_granted('ROLE_client') 
             or is_granted('ROLE_superAdmin')")]
@@ -45,24 +48,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency','read:allBookingItem','read:allUser'])]
+    #[Groups(['read:allAgency','read:allBookingItem','read:allUser','write:User'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[Groups(['read:allUser','write:User'])]
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
-    #[Groups(['read:allAgency','read:allUser'])]
+    #[Groups(['read:allAgency','read:allUser','write:User'])]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
-    #[Groups(['read:allAgency','read:allUser'])]
+    #[Groups(['read:allAgency','read:allUser','write:User'])]
     #[ORM\Column(length: 255)]
     private ?string $LastName = null;
 
@@ -73,7 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Booking::class)]
     private Collection $bookings;
 
-    #[Groups(['read:allUser'])]
+    #[Groups(['read:allUser','write:User'])]
     #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist', 'remove'])]
     private Collection $agencies;
 
@@ -83,6 +87,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'user')]
     private Collection $addresses;
+
+    #[Groups(['read:allUser','write:User'])]
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Company $company = null;
 
     public function __construct()
     {
@@ -302,6 +310,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $agenciesName[] = $agency->getName();
         }
         return $agenciesName;
+    }
+
+    public function getCompany(): ?company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?company $company): static
+    {
+        $this->company = $company;
+
+        return $this;
     }
 
     

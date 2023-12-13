@@ -45,9 +45,11 @@ class Calendar
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[Groups(['read:allAgency'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $startDate = null;
 
+    #[Groups(['read:allAgency'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $endDate = null;
 

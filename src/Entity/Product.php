@@ -36,15 +36,15 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency','read:allProduct'])]
+    #[Groups(['read:allProduct'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
-    #[Groups(['read:allAgency','read:allBookingItem','read:allProduct'])]
+    #[Groups(['read:allBookingItem','read:allProduct'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
-    #[Groups(['read:allAgency','read:allProduct'])]
+    #[Groups(['read:allProduct'])]
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?BrandModel $model = null;
 

@@ -21,7 +21,7 @@ class ProductCategory
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency','read:allProduct','read:allProductCategory'])]
+    #[Groups(['read:allProduct','read:allProductCategory'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
@@ -31,14 +31,14 @@ class ProductCategory
     #[ORM\OneToMany(mappedBy: 'productCategory', targetEntity: PriceList::class)]
     private Collection $priceLists;
 
-
-    // Test Swan
     #[ORM\ManyToOne(inversedBy: 'productCategory')]
     private ?Agency $agency = null;
 
-    #[Groups(['read:allAgency'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
 
 
 
@@ -155,6 +155,18 @@ class ProductCategory
     public function setAgency(?Agency $agency): static
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }
