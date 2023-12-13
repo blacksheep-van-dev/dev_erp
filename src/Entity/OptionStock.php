@@ -21,7 +21,7 @@ class OptionStock
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency','read:allOptionStock'])]
+    #[Groups(['read:allOptionStock'])]
     #[ORM\Column]
     private ?int $quantity = null;
 
@@ -33,11 +33,11 @@ class OptionStock
     #[ORM\Column]
     private ?bool $enabled = null;
 
-    #[Groups(['read:allAgency','read:allOptionStock'])]
+    #[Groups(['read:allOptionStock'])]
     #[ORM\Column]
     private ?int $price = null;
 
-    #[Groups(['read:allAgency','read:allOptionStock'])]
+    #[Groups(['read:allOptionStock'])]
     #[ORM\ManyToOne(inversedBy: 'optionStocks')]
     private ?Option $options = null;
 
