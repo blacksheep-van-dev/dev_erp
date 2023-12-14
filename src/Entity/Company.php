@@ -21,23 +21,27 @@ class Company
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency','read:allCompany'])]
+    #[Groups(['read:allAgency','read:allCompany','write:Company'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['write:Company'])]
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Agency::class)]
     private Collection $Agencies;
 
-    #[Groups(['read:allAgency','read:allCompany'])]
+    #[Groups(['read:allAgency','read:allCompany','write:Company'])]
     #[ORM\Column(length: 255)]
     private ?string $siren = null;
 
+    #[Groups(['write:Company'])]
     #[ORM\Column(length: 255)]
     private ?string $siret = null;
 
+    #[Groups(['write:Company'])]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $creationDate = null;
 
+    #[Groups(['write:Company'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tvaintra = null;
 
