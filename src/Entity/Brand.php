@@ -10,19 +10,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BrandRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:allBrand']],
+    denormalizationContext: ['groups' => ['write:brand']],
+)]
+
 class Brand
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allBrandModel','write:brand','read:allBrand'])]
     private ?int $id = null;
 
-    #[Groups(['read:allBrandModel'])]
     #[ORM\Column(length: 255)]
+    #[Groups(['read:allBrandModel','write:brand','read:allBrand'])]
     private ?string $label = null;
 
     #[ORM\OneToMany(mappedBy: 'brand', targetEntity: BrandModel::class, cascade: ['persist', 'remove'])]
+    #[Groups(['write:brand','read:allBrand'])]
     private Collection $Models;
 
 

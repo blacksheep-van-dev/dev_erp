@@ -8,12 +8,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: BrandModelRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allBrandModel']],
     denormalizationContext: ['groups' => ['write:BrandModel']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['brand' => 'exact'])]
+
 class BrandModel
 {
     #[ORM\Id]
