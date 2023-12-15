@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
@@ -21,6 +23,7 @@ use ApiPlatform\Metadata\GetCollection;
     normalizationContext: ['groups' => ['read:allProduct']],
     denormalizationContext: ['groups' => ['write:Product']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['type' => 'exact', 'model' => 'exact', 'productCategory' => 'exact','agency' => 'partial'])]
 
 #[Get()]
 #[GetCollection()]
@@ -34,6 +37,7 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allProduct'])]
     private ?int $id = null;
 
     #[Groups(['read:allProduct'])]
@@ -67,6 +71,7 @@ class Product
     #[ORM\ManyToMany(targetEntity: Booking::class, mappedBy: 'products')]
     private Collection $bookings;
 
+    #[Groups(['read:allProduct'])]
     #[ORM\ManyToOne(inversedBy: 'Products', cascade : ['persist', 'remove'])]
     private ?Agency $agency = null;
 

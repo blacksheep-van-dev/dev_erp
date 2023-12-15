@@ -32,7 +32,7 @@ class VehicleDocument
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:allVehicleDocument'])]
+    #[Groups(['read:allVehicleDocument','read:allProduct'])]
     private ?int $id = null;
 
     #[ORM\Column]

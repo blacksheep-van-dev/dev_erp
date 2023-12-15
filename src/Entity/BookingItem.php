@@ -19,7 +19,7 @@ class BookingItem
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:allBooking','read:allBookingItem'])]
+    #[Groups(['read:allBooking','read:allBookingItem','read:allProduct'])]
     private ?int $id = null;
 
     #[Groups(['read:allBookingItem'])]

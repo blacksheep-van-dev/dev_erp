@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allAgency']],
@@ -18,16 +20,17 @@ use ApiPlatform\Metadata\GetCollection;
     forceEager: false,
     paginationItemsPerPage: 2,
 )]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact','name' => 'partial','reference' => 'exact'])]
 #[ORM\Entity(repositoryClass: AgencyRepository::class)]
 class Agency
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:allAgency','read:allBooking'])]
+    #[Groups(['read:allAgency','read:allBooking','read:allProduct'])]
     private ?int $id = null;
 
-    #[Groups(['read:allAgency','write:Agency','read:allBooking'])]
+    #[Groups(['read:allAgency','write:Agency','read:allBooking','read:allProduct'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -73,6 +76,7 @@ class Agency
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
+    #[Groups(['read:allAgency', 'write:Agency', 'read:allProduct'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
 

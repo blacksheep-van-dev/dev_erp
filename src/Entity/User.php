@@ -27,7 +27,7 @@ use ApiPlatform\Metadata\GetCollection;
     normalizationContext: ['groups' => ['read:allUser']],
     denormalizationContext: ['groups' => ['write:User']],
 )]
-#[ApiFilter(SearchFilter::class, properties: ['roles' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['roles' => 'partial', 'id' => 'exact','LastName' => 'partial','firstName' => 'partial','email' => 'partial'])]
 
 #[Get()]
 #[GetCollection()]
