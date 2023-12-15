@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+// agency
+use App\Entity\Agency;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,8 +26,10 @@ class UserController extends AbstractController
         ]);
     }
 
+
+
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, UserPasswordHasherInterface $passwordHasher, Agency $agency): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -49,6 +53,34 @@ class UserController extends AbstractController
                     )
                 );
             }
+
+            // get role from form
+            $roles = $form->get('roles')->getData();
+
+            // role is role_admin or role_superAdmin
+            if (in_array('ROLE_ADMIN', $roles) || in_array('ROLE_SUPER_ADMIN', $roles)) {
+                $user->setRoles($roles);
+
+
+                // get all agencies
+               
+                $agencies = $entityManager->getRepository(Agency::class)->findAll();
+
+                
+                foreach ($agencies as $agency) {
+                    $user->addAgency($agency);
+                    // agency addUser
+                    $agency->addUser($user);
+                    $entityManager->persist($agency);
+                }
+
+            } 
+            
+            
+            // else {
+            //     // role is role_user
+            //     $user->setRoles(['ROLE_USER']);
+            // }
 
 
 
@@ -91,6 +123,37 @@ class UserController extends AbstractController
                 $entityManager->persist($agency);
             }
 
+
+            $roles = $form->get('roles')->getData();
+
+            // role is role_admin or role_superAdmin
+            if (in_array('ROLE_ADMIN', $roles) || in_array('ROLE_SUPER_ADMIN', $roles)) {
+                $user->setRoles($roles);
+
+
+                // get all agencies
+               
+                $agencies = $entityManager->getRepository(Agency::class)->findAll();
+
+                
+                foreach ($agencies as $agency) {
+                    $user->addAgency($agency);
+                    // agency addUser
+                    $agency->addUser($user);
+                    $entityManager->persist($agency);
+                }
+
+            } 
+
+            else {
+                // remove agencies from user
+                foreach ($agencies as $agency) {
+                  //remove user from agency
+                    $user->removeAgency($agency);
+                    $agency->removeUser($user);
+                    $entityManager->persist($agency);
+                }
+            }
 
 
             // upload picture profile
