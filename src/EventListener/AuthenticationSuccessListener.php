@@ -35,6 +35,7 @@ class AuthenticationSuccessListener
             'firstName' => $user->getFirstName(),
             'lastName' => $user->getLastName(),
             'email' => $user->getEmail(),
+            // return roles other than ROLE_USER
             'roles' => $user->getRoles(),
             'agencies' => $user->getAgenciesName(),
 
