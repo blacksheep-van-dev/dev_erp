@@ -18,7 +18,6 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
     normalizationContext: ['groups' => ['read:allAgency']],
     denormalizationContext: ['groups' => ['write:Agency']],
     forceEager: false,
-    paginationItemsPerPage: 2,
 )]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact','name' => 'partial','reference' => 'exact'])]
 #[ORM\Entity(repositoryClass: AgencyRepository::class)]

@@ -1,7 +1,8 @@
 api_platform:
     collection:
         pagination:
-            page_parameter_name: _page
+            page_parameter_name: page
+            items_per_page_parameter_name: itemsPerPage
     title: Hello API Platform
     version: 1.0.0
     formats:
@@ -12,6 +13,7 @@ api_platform:
         jsonopenapi: ['application/vnd.openapi+json']
         html: ['text/html']
     defaults:
+        pagination_client_items_per_page: true
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
