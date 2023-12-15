@@ -46,10 +46,13 @@
         "symfony/twig-bundle": "6.4.*",
         "symfony/ux-autocomplete": "^2.13",
         "symfony/ux-dropzone": "^2.13",
+        "symfony/ux-live-component": "^2.13",
+        "symfony/ux-turbo": "^2.13",
         "symfony/validator": "6.4.*",
         "symfony/web-link": "6.4.*",
         "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "6.4.*",
+        "symfonycasts/dynamic-forms": "^0.1.1",
         "symfonycasts/verify-email-bundle": "^1.15",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
