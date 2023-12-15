@@ -13,8 +13,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 //CollectionType
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-use Symfonycasts\DynamicForms\DependentField;
-use Symfonycasts\DynamicForms\DynamicFormBuilder;//Symfonycasts\DynamicForms\DependentField::class
+// use Symfonycasts\DynamicForms\DependentField;
+// use Symfonycasts\DynamicForms\DynamicFormBuilder;//Symfonycasts\DynamicForms\DependentField::class
 use App\Repository\AgencyRepository;
 use App\Repository\BookingRepository;
 //product
@@ -36,7 +36,7 @@ class BookingType extends AbstractType
     {
 
 
-        $builder = new DynamicFormBuilder($builder);
+        // $builder = new DynamicFormBuilder($builder);
 
 
         $builder
