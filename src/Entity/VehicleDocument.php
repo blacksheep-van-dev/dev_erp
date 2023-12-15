@@ -32,24 +32,26 @@ class VehicleDocument
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allVehicleDocument'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['read:allVehicleDocument'])]
     private ?\DateTimeImmutable $CreatedAt = null;
 
-    #[Groups(['read:allProduct'])]
+    #[Groups(['read:allProduct','read:allVehicleDocument'])]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $UpdatedAt = null;
 
-    #[Groups(['read:allProduct'])]
+    #[Groups(['read:allProduct','read:allVehicleDocument'])]
     #[ORM\Column(length: 255)]
     private ?string $immatriculation = null;
 
-    #[Groups(['read:allProduct'])]
+    #[Groups(['read:allProduct','read:allVehicleDocument'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $immatriculationDate = null;
 
-    #[Groups(['read:allProduct'])]
+    #[Groups(['read:allProduct','read:allVehicleDocument'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 

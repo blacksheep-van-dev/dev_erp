@@ -36,6 +36,7 @@ class Activity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allActivity'])]
     private ?int $id = null;
 
     #[Groups(['read:allActivity', 'write:Activity'])]

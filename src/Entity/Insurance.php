@@ -20,6 +20,7 @@ class Insurance
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allInsurance'])]
     private ?int $id = null;
 
     #[Groups(['read:allBookingItem','read:allInsurance'])]

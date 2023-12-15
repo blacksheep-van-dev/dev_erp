@@ -24,6 +24,7 @@ class Agency
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allAgency','read:allBooking'])]
     private ?int $id = null;
 
     #[Groups(['read:allAgency','write:Agency','read:allBooking'])]

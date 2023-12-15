@@ -21,6 +21,7 @@ class Option
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allOption'])]
     private ?int $id = null;
 
     #[Groups(['read:allOption'])]

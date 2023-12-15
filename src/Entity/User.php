@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
@@ -46,12 +47,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allBooking','read:allUser'])]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message:'Renseigner un email')]
     #[Groups(['read:allAgency','read:allBookingItem','read:allUser','write:User'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[Assert\Choice(choices :["ROLE_USER", "ROLE_agentProd", "ROLE_agentComptoir", "ROLE_callCenter", "ROLE_respAgenceProp", "ROLE_respAgence", "ROLE_adminSociete", "ROLE_respAgenceProp", "ROLE_respAgenceLic"])]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\Column]
     private array $roles = [];
@@ -62,10 +66,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
+    
+    #[Assert\NotBlank(message:'Renseigner un Prénom')]
     #[Groups(['read:allAgency','read:allUser','write:User'])]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
+    
+    #[Assert\NotBlank(message:'Renseigner un Nom')]
     #[Groups(['read:allAgency','read:allUser','write:User'])]
     #[ORM\Column(length: 255)]
     private ?string $LastName = null;
@@ -77,6 +85,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Booking::class)]
     private Collection $bookings;
 
+    
+    #[Assert\NotBlank(message:'Renseigner une agence de rattachement')]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist', 'remove'])]
     private Collection $agencies;
@@ -88,6 +98,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Address::class, mappedBy: 'user')]
     private Collection $addresses;
 
+    
+    #[Assert\NotBlank(message:'Renseigner une société de rattachement')]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Company $company = null;

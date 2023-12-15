@@ -19,6 +19,7 @@ class BrandModel
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allBrandModel'])]
     private ?int $id = null;
 
     #[Groups(['read:allBrandModel'])]

@@ -19,6 +19,7 @@ class ProductCategory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allProductCategory'])]
     private ?int $id = null;
 
     #[Groups(['read:allProduct','read:allProductCategory'])]

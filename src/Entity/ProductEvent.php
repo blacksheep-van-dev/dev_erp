@@ -17,6 +17,7 @@ class ProductEvent
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:allProduct','read:allProductEvent'])]
     private ?int $id = null;
 
     #[Groups(['read:allProduct','read:allProductEvent'])]
