@@ -8,6 +8,10 @@ api_platform:
     formats:
         # jsonld: ['application/ld+json']
         jsonld: ['application/json']
+        json: ['application/merge-patch+json']
+    patch_formats:
+        json:     ['application/json','application/merge-patch+json']
+        jsonapi:  ['application/vnd.api+json']
     docs_formats:
         jsonld: ['application/ld+json']
         jsonopenapi: ['application/vnd.openapi+json']
