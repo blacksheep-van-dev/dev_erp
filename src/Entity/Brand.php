@@ -8,8 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 #[ORM\Entity(repositoryClass: BrandRepository::class)]
+#[UniqueEntity(fields: ['label'], message: 'There is already an Model with this name')]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allBrand']],
     denormalizationContext: ['groups' => ['write:brand']],

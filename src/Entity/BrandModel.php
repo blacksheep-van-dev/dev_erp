@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BrandModelRepository::class)]
+#[UniqueEntity(fields: ['label'], message: 'There is already an BrandModel with this name')]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allBrandModel']],
     denormalizationContext: ['groups' => ['write:BrandModel']],
@@ -27,7 +29,7 @@ class BrandModel
     private ?int $id = null;
 
     #[Groups(['read:allBrandModel','write:BrandModel'])]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $label = null;
 
     #[Groups(['read:allBrandModel','write:BrandModel'])]
