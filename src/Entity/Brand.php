@@ -20,10 +20,10 @@ class Brand
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:allBrandModel','write:brand','read:allBrand'])]
+    #[Groups(['read:allBrandModel','write:brand','read:allBrand','write:BrandModel'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['read:allBrandModel','write:brand','read:allBrand'])]
     private ?string $label = null;
 

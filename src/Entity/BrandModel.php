@@ -26,11 +26,11 @@ class BrandModel
     #[Groups(['read:allBrandModel'])]
     private ?int $id = null;
 
-    #[Groups(['read:allBrandModel'])]
+    #[Groups(['read:allBrandModel','write:BrandModel'])]
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
-    #[Groups(['read:allBrandModel'])]
+    #[Groups(['read:allBrandModel','write:BrandModel'])]
     #[ORM\ManyToOne(inversedBy: 'Models')]
     private ?Brand $brand = null;
 
