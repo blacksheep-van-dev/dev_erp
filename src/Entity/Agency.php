@@ -41,7 +41,7 @@ class Agency
     #[ORM\OneToMany(mappedBy: 'bookingAgencySource', targetEntity: Booking::class)]
     private Collection $bookings;
 
-    #[Groups(['read:allAgency', 'write:Agency'])]
+    #[Groups(['read:allAgency'])]
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Calendar::class)]
     private Collection $calendars;
 
@@ -60,6 +60,7 @@ class Agency
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: OptionStock::class)]
     private Collection $optionStocks;
 
+    #[Groups(['read:allAgency', 'write:Agency'])]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
