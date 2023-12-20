@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 // agency
 use App\Entity\Agency;
+use App\Entity\Company;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,13 +30,46 @@ class UserController extends AbstractController
 
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, UserPasswordHasherInterface $passwordHasher, Agency $agency): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // dd($request->get('user'));
+
+            // CAS 1 - Quand On renseigne uniquement l'agence dans le formulaire :
+                // Récupération de l'agence et sa société afin de flush les infos dans la BDD
+            if (isset($request->get('user')['agencies'])) {
+                    $agenceId = $request->get('user')['agencies'][0];
+                    $agence = $entityManager->getRepository(Agency::class)->find($agenceId);
+                    $companyId = $agence->getCompany()->getId();
+                    $company = $agence->getCompany();
+                    $user->setCompany($company);
+                    $request->get('user')['company'] = $companyId;
+                    $user->addAgency($agence);
+                    $agence->addUser($user);
+            }            
+            // CAS 2 - Quand On renseigne uniquement la SOCIETE dans le formulaire :
+                // Récupération de TOUTES LES AGENCES afin de flush les infos dans la BDD
+            if (isset($request->get('user')['company'])) {
+                // récupération COMPANY :
+                $idCompany = $request->get('user')['company'];
+                $company = $entityManager->getRepository(Company::class)->find($idCompany);
+                $user->setCompany($company);
+                // agence en lien avec la company :
+                $agencyOfCompany = $entityManager->getRepository(Agency::class)->findBy([
+                    'company' => $idCompany,
+                ]);
+
+                foreach ($agencyOfCompany as $company) {
+                    $user->addAgency($company);
+                };
+            }
+
+
+
 
             // upload picture profile
             $profileUrl = $form->get('picture')->getData();
@@ -43,6 +77,7 @@ class UserController extends AbstractController
                 $profileUrlName = $fileUploader->upload($profileUrl);
                 $user->setPicture($profileUrlName);
             }
+
             //pwd
             if ($form->get('password')->getData()) {
                 // hash password
@@ -58,23 +93,33 @@ class UserController extends AbstractController
             $roles = $form->get('roles')->getData();
 
             // role is role_admin or role_superAdmin
-            if (in_array('ROLE_ADMIN', $roles) || in_array('ROLE_SUPER_ADMIN', $roles)) {
-                $user->setRoles($roles);
+            
+
+            
+            // if (in_array('ROLE_ADMIN', $roles) || in_array('ROLE_SUPER_ADMIN', $roles)) {
+            //     $user->setRoles($roles);
 
 
-                // get all agencies
+            //     // get all agencies
                
-                $agencies = $entityManager->getRepository(Agency::class)->findAll();
+            //     $agencies = $entityManager->getRepository(Agency::class)->findAll();
 
                 
-                foreach ($agencies as $agency) {
-                    $user->addAgency($agency);
-                    // agency addUser
-                    $agency->addUser($user);
-                    $entityManager->persist($agency);
-                }
+            //     foreach ($agencies as $agency) {
+            //         $user->addAgency($agency);
+            //         // agency addUser
+            //         $agency->addUser($user);
+            //         $entityManager->persist($agency);
+            //     }
+            
+            
+            // // Gestion des relations
+            //     if (isset($request->get('user')['agences']) && count($request->get('user')['agences']) > 0) {
+            //         $agenceId = $request->get('user')['agences'][0];
+            //         dd($agenceId);
+            // }
 
-            } 
+            // } 
             
             
             // else {

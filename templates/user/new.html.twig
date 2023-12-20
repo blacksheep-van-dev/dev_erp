@@ -2,10 +2,69 @@
 
 {% block title %}New User{% endblock %}
 
+
+{% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('User/newForm.css') }}">
+{% endblock %}
+
+
 {% block body %}
     <h1>Create new User</h1>
 
     {{ include('user/_form.html.twig') }}
 
     <a href="{{ path('app_user_index') }}">back to list</a>
+{% endblock %}
+
+
+
+
+
+
+
+{% block javascripts %}
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+let user_roles = document.querySelector('#user_roles')
+let agenceZone = document.querySelector('.agenceZone')
+let companyZone = document.querySelector('.companyZone')
+let user_agence = document.querySelector('#user_agencies')
+let user_company = document.querySelector('#user_company')
+let btn = document.querySelector('.btn')
+
+agenceZone.classList.add('cacher')
+companyZone.classList.add('cacher')
+
+//Retirer attribut "multiple" au select AGENCES
+// Permet d'avoir un select qui sélectionne une agence à la fois
+if (user_agence) {
+ user_agence.removeAttribute('multiple');
+}
+
+// Pour mettre les champs caché champs à null
+function nullValue(field) {
+    (field !== null)
+    field.value = ''
+}
+
+// Pour montrer ou cacher les champs souhaités
+function hideShow(hide, show) {
+    hide.classList.add('cacher')
+    show.classList.remove('cacher')
+}
+
+// Pour cacher les champs indésirables et les initialiser à "null" 
+user_roles.addEventListener('change', function (){
+    console.log(user_roles.value)
+if (user_roles.value > 5) {
+    nullValue(user_agence)
+    hideShow(agenceZone,companyZone)
+} else {
+    nullValue(user_company)
+    hideShow(companyZone,agenceZone)
+}
+})
+})
+</script>
 {% endblock %}

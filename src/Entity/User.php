@@ -55,10 +55,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Assert\Choice(choices :["ROLE_USER", "ROLE_agentProd", "ROLE_agentComptoir", "ROLE_callCenter", "ROLE_respAgenceProp", "ROLE_respAgence", "ROLE_adminSociete", "ROLE_respAgenceProp", "ROLE_respAgenceLic"])]
+    // #[Assert\Choice(choices :["ROLE_USER", "ROLE_agentProd", "ROLE_agentComptoir", "ROLE_callCenter", "ROLE_respAgenceProp", "ROLE_respAgence", "ROLE_adminSociete", "ROLE_respAgenceProp", "ROLE_respAgenceLic"],message:'haha')]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\Column]
-    private array $roles = [];
+    private $roles = []||"";
 
     /**
      * @var string The hashed password
@@ -99,7 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $addresses;
 
     
-    #[Assert\NotBlank(message:'Renseigner une société de rattachement')]
+    // #[Assert\NotBlank(message:'Renseigner une société de rattachement')]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Company $company = null;
@@ -141,21 +141,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
-    {
+
+
+     public function getRoles(): array
+     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        // $roles[] = 'ROLE_USER';
-
+        $roles = ['ROLE_USER'];
         return array_unique($roles);
-    }
+     }
+        
+    // Modification de SetRoles afin qu'il SET une chaine de caractère
+        public function setRoles($roles): static
+        {
+            $this->roles = $roles;
 
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
+            return $this;
+        }
 
     /**
      * @see PasswordAuthenticatedUserInterface
