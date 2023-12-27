@@ -20,6 +20,8 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\GetCollection;
+use App\Controller\UserSearchController;
+use App\Controller\UserVerifyController;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -30,8 +32,26 @@ use ApiPlatform\Metadata\GetCollection;
 #[ApiFilter(SearchFilter::class, properties: ['roles' => 'partial', 'id' => 'exact','LastName' => 'partial','firstName' => 'partial','email' => 'partial'])]
 
 #[Get()]
+#[Get(
+    name:'userSearch',
+    uriTemplate:"/user/search/{data}",
+    controller:UserSearchController::class,
+    openapiContext: [
+        'summary' => 'Effectue une recherche sur les champs Prénom/Nom/Email',
+        // 'parameters' => ['string'],
+    ],
+)]
+
 #[GetCollection()]
-#[Post(security:"is_granted('ROLE_callCenter') or is_granted('ROLE_superAdmin')")]
+// #[Post(security:"is_granted('ROLE_callCenter') or is_granted('ROLE_superAdmin')")]
+#[Post()]
+
+// Route pour effectuer la vérification
+#[Post(
+    name:'verifyAction',
+    uriTemplate:"/user/verify/{id}",
+    controller:UserVerifyController::class
+)]
 
 #[Patch(security:"is_granted('ROLE_client') 
             or is_granted('ROLE_superAdmin')")]
@@ -42,6 +62,9 @@ use ApiPlatform\Metadata\GetCollection;
 #[Delete(security:"is_granted('ROLE_client') 
             or is_granted('ROLE_superAdmin')")]
 
+
+
+            
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -88,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
     #[Assert\NotBlank(message:'Renseigner une agence de rattachement')]
     #[Groups(['read:allUser','write:User'])]
-    #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist'])]
     private Collection $agencies;
 
     #[Groups(['read:allUser'])]
@@ -147,7 +170,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles = ['ROLE_USER'];
+        $roles = [$this->roles];
         return array_unique($roles);
      }
         
@@ -162,7 +185,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -340,6 +363,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function __toString()
+{
+    return $this->firstName . ' ' . $this->LastName;
+}
 
     
     

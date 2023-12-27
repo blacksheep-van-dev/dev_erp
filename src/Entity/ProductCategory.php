@@ -26,7 +26,7 @@ class ProductCategory
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
-    #[ORM\OneToMany(mappedBy: 'productCategory', targetEntity: Product::class)]
+    #[ORM\OneToMany(mappedBy: 'productCategory', targetEntity: Product::class, cascade: ['persist', 'remove'])]
     private Collection $products;
 
     #[ORM\OneToMany(mappedBy: 'productCategory', targetEntity: PriceList::class)]

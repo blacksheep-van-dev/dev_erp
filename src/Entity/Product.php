@@ -57,11 +57,11 @@ class Product
     private ?ProductCategory $productCategory = null;
 
     #[Groups(['read:allProduct'])]
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: BookingItem::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: BookingItem::class, cascade: ['persist', 'remove'])]
     private Collection $bookingItems;
 
     #[Groups(['read:allProduct'])]
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductEvent::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductEvent::class, cascade: ['persist', 'remove'])]
     private Collection $productEvents;
 
     #[Groups(['read:allProduct'])]

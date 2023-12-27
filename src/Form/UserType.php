@@ -38,6 +38,27 @@ class UserType extends AbstractType
         $builder = new DynamicFormBuilder($builder);
             $builder
             ->add('email')
+            ->add('password', PasswordType::class, [
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'class' => 'form-control',
+                ],
+            ])
+            ->add('firstName')
+            ->add('LastName')
+            //picure upload
+            ->add('picture', FileType::class, [
+                'label' => 'Picture (JPG, PNG, JPEG file)',
+                'mapped' => false,
+                'required' => false,
+                'multiple' => false,
+                'attr' => [
+                    'accept' => 'image/*',
+                    'class' => 'form-control',
+                ],
+            ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'User' => 'ROLE_USER',
@@ -56,39 +77,15 @@ class UserType extends AbstractType
                 ],
                 // 'multiple' => true,
                 // 'expanded' => true,
-                'data' => ['ROLE_USER'],
+                // 'data' => $options['data']->getRoles(),
             ])
 
-            ->add('password', PasswordType::class, [
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'autocomplete' => 'new-password',
-                    'class' => 'form-control',
-                ],
-            ])
-            ->add('firstName')
-            ->add('LastName')
-            ->add('isVerified')
-
-            //picure upload
-            ->add('picture', FileType::class, [
-                'label' => 'Picture (JPG, PNG, JPEG file)',
-                'mapped' => false,
-                'required' => false,
-                'multiple' => false,
-                'attr' => [
-                    'accept' => 'image/*',
-                    'class' => 'form-control',
-                ],
-            ])
 
             ->add('agencies', EntityType::class, [
                 'label' => 'Choisir une agence',
                 'multiple' => true,
                 'expanded' => false,
                 'class' => Agency::class,
-                // choice label nom et prenom
                 'choice_label' => 'name',
                 "required" => false,
                 'row_attr' => ['class' => 'agenceZone'],

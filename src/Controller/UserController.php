@@ -27,8 +27,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -37,7 +35,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // dd($request->get('user'));
 
             // CAS 1 - Quand On renseigne uniquement l'agence dans le formulaire :
                 // Récupération de l'agence et sa société afin de flush les infos dans la BDD
@@ -153,13 +150,18 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, FileUploader $fileUploader): Response
     {
         $form = $this->createForm(UserType::class, $user);
+
+        //ligne ci-dessous, reprend directement le rôle connu, pour initialiser la liste déroulante des RÔLES avec le bon rôle
+        $form->get('roles')->setData($user->getRoles()[0]);
+
         $form->handleRequest($request);
+
+        // Avoir le rôle du user
+        $roles = $form->get('roles')->getData()[0];
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
             // agencies entity type
-
             $agencies = $form->get('agencies')->getData();
             foreach ($agencies as $agency) {
                 $user->addAgency($agency);
@@ -169,7 +171,6 @@ class UserController extends AbstractController
             }
 
 
-            $roles = $form->get('roles')->getData();
 
             // role is role_admin or role_superAdmin
             if (in_array('ROLE_ADMIN', $roles) || in_array('ROLE_SUPER_ADMIN', $roles)) {
@@ -245,5 +246,15 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/search/{data}', name: 'search_user')]
+    public function search(UserRepository $userRepository, string $data): Response
+    {
+        // Faites votre logique de recherche ici
+        $results = $userRepository->searchUser($data);
+
+        return $this->json($results);
     }
 }

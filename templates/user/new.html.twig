@@ -4,7 +4,8 @@
 
 
 {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('User/newForm.css') }}">
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('User/newForm.css') }}">
 {% endblock %}
 
 
@@ -23,7 +24,7 @@
 
 
 {% block javascripts %}
-<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+{{ parent() }}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 let user_roles = document.querySelector('#user_roles')
@@ -56,11 +57,17 @@ function hideShow(hide, show) {
 
 // Pour cacher les champs indésirables et les initialiser à "null" 
 user_roles.addEventListener('change', function (){
+if (user_roles.value == 0) {
     console.log(user_roles.value)
-if (user_roles.value > 5) {
+    nullValue(user_agence)
+    nullValue(user_company)
+    agenceZone.classList.add('cacher')
+    companyZone.classList.add('cacher')
+} else if (user_roles.value > 5){
     nullValue(user_agence)
     hideShow(agenceZone,companyZone)
-} else {
+} else if (user_roles.value < 5 && user_roles.value != 0) {
+    console.log('inférieur a 5')
     nullValue(user_company)
     hideShow(companyZone,agenceZone)
 }

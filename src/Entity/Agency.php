@@ -38,11 +38,11 @@ class Agency
     #[ORM\ManyToOne(inversedBy: 'Agencies')]
     private ?Company $company = null;
 
-    #[ORM\OneToMany(mappedBy: 'bookingAgencySource', targetEntity: Booking::class)]
+    #[ORM\OneToMany(mappedBy: 'bookingAgencySource', targetEntity: Booking::class, cascade: ['persist', 'remove'])]
     private Collection $bookings;
 
     #[Groups(['read:allAgency'])]
-    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Calendar::class)]
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Calendar::class, cascade: ['persist', 'remove'])]
     private Collection $calendars;
 
     #[ORM\OneToMany(mappedBy: 'agency', targetEntity: PriceList::class)]
@@ -51,13 +51,13 @@ class Agency
     #[ORM\OneToMany(mappedBy: 'Agency', targetEntity: Option::class)]
     private Collection $options;
 
-    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: ProductCategory::class)]
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: ProductCategory::class, cascade: ['persist', 'remove'])]
     private Collection $ProductCategories;
 
-    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class)]
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: Product::class, cascade: ['persist', 'remove'])]
     private Collection $Products;
 
-    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: OptionStock::class)]
+    #[ORM\OneToMany(mappedBy: 'agency', targetEntity: OptionStock::class, cascade: ['persist', 'remove'])]
     private Collection $optionStocks;
 
     #[Groups(['read:allAgency', 'write:Agency'])]
