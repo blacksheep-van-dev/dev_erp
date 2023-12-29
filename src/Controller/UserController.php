@@ -173,16 +173,18 @@ class UserController extends AbstractController
         $roles = $form->get('roles')->getData()[0];
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // dd(($request));
             // agencies entity type
-            $agencies = $form->get('agencies')->getData();
-            foreach ($agencies as $agency) {
-                $user->addAgency($agency);
-                        // agency addUser
-                $agency->addUser($user);
-                $entityManager->persist($agency);
-            }
+            $agencies = $request->get('user')['agencies'];
+            dd($request->get('user')['agencies']);
 
+            foreach ($agencies as $agency) {
+                $agence = $entityManager->getRepository(Agency::class)->find($agency);
+                $user->addAgency($agence);
+                        // agency addUser
+                $agence->addUser($user);
+                $entityManager->persist($agence);
+            }
 
 
             // role is role_admin or role_superAdmin
@@ -208,9 +210,10 @@ class UserController extends AbstractController
                 // remove agencies from user
                 foreach ($agencies as $agency) {
                   //remove user from agency
-                    $user->removeAgency($agency);
-                    $agency->removeUser($user);
-                    $entityManager->persist($agency);
+                    $agence = $entityManager->getRepository(Agency::class)->find($agency);
+                    $user->removeAgency($agence);
+                    $agence->removeUser($user);
+                    $entityManager->persist($agence);
                 }
             }
 

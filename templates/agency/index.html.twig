@@ -6,7 +6,9 @@
 {% block body %}
 	<h1>Gestion des Agences</h1>
 
-	<a class="btn btn-sm btn-success" href="{{ path('app_agency_new') }}">Créer une agence</a>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a class="btn btn-sm btn-success" href="{{ path('app_agency_new') }}">Créer une agence</a>
+	{% endif %}
 
 	<div class="container-fluid mt-4">
 		<table class="table">
@@ -40,7 +42,9 @@
 						</td>
 						<td>
 							<a class="btn btn-sm btn-info text-light" href="{{ path('app_agency_show', {'id': agency.id}) }}">Voir</a>
-							<a class="btn btn-sm btn-warning" href="{{ path('app_agency_edit', {'id': agency.id}) }}">Editer</a>
+							{% if is_granted('ROLE_ADMIN') %}
+								<a class="btn btn-sm btn-warning" href="{{ path('app_agency_edit', {'id': agency.id}) }}">Editer</a>
+							{% endif %}
 						</td>
 					</tr>
 				{% else %}

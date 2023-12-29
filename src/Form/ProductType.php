@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\ProductCategory;
-
+use Doctrine\ORM\EntityRepository;
 
 class ProductType extends AbstractType
 {
