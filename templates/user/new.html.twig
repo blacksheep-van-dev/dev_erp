@@ -63,13 +63,18 @@ if (user_roles.value == 0) {
     nullValue(user_company)
     agenceZone.classList.add('cacher')
     companyZone.classList.add('cacher')
-} else if (user_roles.value > 5){
+} else if (user_roles.value > 7){
     nullValue(user_agence)
     hideShow(agenceZone,companyZone)
-} else if (user_roles.value < 5 && user_roles.value != 0) {
-    console.log('inférieur a 5')
+} else if (user_roles.value < 7 && user_roles.value != 0) {
+    console.log('inférieur a 7')
     nullValue(user_company)
     hideShow(companyZone,agenceZone)
+    if (user_roles.value == 5 || user_roles.value == 6) {
+        user_agence.setAttribute('multiple','multiple');
+    } else {
+        user_agence.removeAttribute('multiple');
+    }
 }
 })
 })

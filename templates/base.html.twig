@@ -59,10 +59,12 @@
 								</a>
 							</li>
 
-
+							{% if is_granted('ROLE_ADMIN') %}
 							<li>
 								<a class="nav-link" href="{{ path('app_company_index') }}">Sociétés</a>
 							</li>
+							{% endif %}
+
 							<li>
 								<a class="nav-link" href="{{ path('app_agency_index') }}">Agences</a>
 							</li>
@@ -72,13 +74,15 @@
 							<li>
 								<a class="nav-link" href="{{ path('app_product_index') }}">Produits</a>
 							</li>
+
+							{% if is_granted('ROLE_ADMIN') %}
 							<li>
 								<a class="nav-link" href="{{ path('app_user_index') }}">Utilisateurs</a>
 							</li>
 							<li>
 								<a class="nav-link" href="/api">API</a>
 							</li>
-
+							{% endif %}
 						</ul>
 						<form class="d-flex">
 							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -104,10 +108,13 @@
 				<div class="offcanvas-body">
 					<ul>
 
+						{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_company_index') }}">Sociétés</a>
 						</li>
 						<hr/>
+						{% endif %}
+						
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_agency_index') }}">Agences</a>
 						</li>
@@ -116,19 +123,27 @@
 							<a class="title" href="{{ path('app_booking_index') }}">Bookings</a>
 						</li>
 						<hr/>
+						
+						{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_user_index') }}">Utilisateurs</a>
 						</li>
 						<hr/>
+						{% endif %}
+						
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_product_index') }}">Produits</a>
 						</li>
 						<li class="nav-item">
 							<a href="/product/category">Catégories produits</a>
 						</li>
+
+						{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
 							<a href="/brand">Gestion des marques</a>
 						</li>
+						{% endif %}
+						
 						<li class="nav-item">
 							<a href="/brandmodel">Gestion des modèles</a>
 						</li>

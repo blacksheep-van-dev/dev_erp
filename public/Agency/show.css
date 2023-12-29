@@ -1,0 +1,38 @@
+.cacher{
+    display: none;
+}
+
+.zoneDepliable{
+	display: flex;
+    flex-wrap: wrap;
+    margin-top: 34px;
+    padding: 21px 23px;
+    border-radius: 7px;
+}
+
+.productsZone{
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+.tabProductZone{
+    background-color: #a1c4fd2e;
+}
+
+.bookingsZone{
+    background-image: linear-gradient(120deg, #fdd2a1 0%, #fdefa1 60%);
+}
+
+.tabBookingZone{
+    background-color: #fdd2a145;
+}
+
+.arrowZone{
+margin-left: 52px;
+}
+
+.arrow{
+    cursor: pointer;
+}
+
+.products{
+    margin-bottom: 115px;
+}

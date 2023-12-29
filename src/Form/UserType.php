@@ -66,11 +66,13 @@ class UserType extends AbstractType
                         'Agent de production' => 'ROLE_agentProd',
                         'Agent de comptoir' => 'ROLE_agentComptoir',
                         'Call Center' => 'ROLE_callCenter',
-                        'Resp agence' => 'ROLE_respAgenceProp',
-                        'Resp Parc Agences Propes' => 'ROLE_respAgence',
+                        'Responsable Agence' => 'ROLE_respAgence',
+                        'Resp de Parc Agences Propes' => 'ROLE_respAgenceProp',
+                        'Resp Régional Agences Licenciés' => 'ROLE_respAgenceLic',
+                        'Resp Secteur Point Relais' => 'ROLE_respPtRelais',
                     ],
                     'Admin Company' => [
-                        'Admin Société' => 'ROLE_adminSociete',
+                        'Admin Société' => 'ROLE_adminSociete', //ok
                         'Resp Parc Agences Propes' => 'ROLE_respAgenceProp',
                         'Resp Parc Agences Licencies' => 'ROLE_respAgenceLic',
                     ],

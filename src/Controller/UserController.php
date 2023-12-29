@@ -35,10 +35,23 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // dd($request);
 
             // CAS 1 - Quand On renseigne uniquement l'agence dans le formulaire :
                 // Récupération de l'agence et sa société afin de flush les infos dans la BDD
             if (isset($request->get('user')['agencies'])) {
+                        // Sous CAS 1,1 - Quand on sélectionne le role "ROLE_respAgenceProp" ou "ROLE_respAgenceLic", il faut laisser la possibilité de pouvoir sélectionner plusieurs agences
+                        if (count($request->get('user')['agencies']) > 1) {
+                            foreach ($request->get('user')['agencies'] as $agenceSelect) {
+                                $agence = $entityManager->getRepository(Agency::class)->find($agenceSelect);
+                                $companyId = $agence->getCompany()->getId();
+                                $company = $agence->getCompany();
+                                $user->setCompany($company);
+                                $request->get('user')['company'] = $companyId;
+                                $user->addAgency($agence);
+                                $agence->addUser($user);
+                            }
+                        }
                     $agenceId = $request->get('user')['agencies'][0];
                     $agence = $entityManager->getRepository(Agency::class)->find($agenceId);
                     $companyId = $agence->getCompany()->getId();
@@ -173,7 +186,7 @@ class UserController extends AbstractController
 
 
             // role is role_admin or role_superAdmin
-            if (in_array('ROLE_ADMIN', $roles) || in_array('ROLE_SUPER_ADMIN', $roles)) {
+            if ($roles == 'ROLE_ADMIN' || $roles == 'ROLE_SUPER_ADMIN') {
                 $user->setRoles($roles);
 
 

@@ -227,20 +227,20 @@ class Agency
     // /**
     //  * @return Collection<int, Option>
     //  */
-    // public function getOptions(): Collection
-    // {
-    //     return $this->options;
-    // }
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
 
-    // public function addOption(Option $option): static
-    // {
-    //     if (!$this->options->contains($option)) {
-    //         $this->options->add($option);
-    //         $option->setAgency($this);
-    //     }
+    public function addOption(Option $option): static
+    {
+        if (!$this->options->contains($option)) {
+            $this->options->add($option);
+            $option->setAgency($this);
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     // public function removeOption(Option $option): static
     // {
