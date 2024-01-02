@@ -27,7 +27,7 @@
 
 			{{ encore_entry_script_tags('app') }}
 			 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-			{#      <script src="{{ asset('bundles/onlinqformcollection/onlinq-collection.js') }}"></script>
+			{#               <script src="{{ asset('bundles/onlinqformcollection/onlinq-collection.js') }}"></script>
 		#}
 			 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 			 <script src="https://unpkg.com/htmx.org@1.9.9"></script>
@@ -35,8 +35,7 @@
 			 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 			 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 			 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-			 <script src="/assets/app.js"></script> 
-			 <script src="{{ asset('bundles/onlinqformcollection/onlinq-collection.js') }}"></script>
+			 <script src="/assets/app.js"></script> <script src="{{ asset('bundles/onlinqformcollection/onlinq-collection.js') }}"></script>
 		{% endblock %}
 	</head>
 	<body>
@@ -59,13 +58,20 @@
 								</a>
 							</li>
 
+							{# if {{ app.user.roles[0] }} == ROLE_ADMIN #}
+
+							{# {{ dump(is_granted("ROLE_ADMIN")) }}  #}
+
 							{% if is_granted('ROLE_ADMIN') %}
-							<li>
-								<a class="nav-link" href="{{ path('app_company_index') }}">Sociétés</a>
-							</li>
+
+								<li>
+									<a class="nav-link" href="{{ path('app_company_index') }}">Sociétés</a>
+								</li>
 							{% endif %}
 
 							<li>
+
+
 								<a class="nav-link" href="{{ path('app_agency_index') }}">Agences</a>
 							</li>
 							<li>
@@ -76,17 +82,17 @@
 							</li>
 
 							{% if is_granted('ROLE_ADMIN') %}
-							<li>
-								<a class="nav-link" href="{{ path('app_user_index') }}">Utilisateurs</a>
-							</li>
-							<li>
-								<a class="nav-link" href="/api">API</a>
-							</li>
+								<li>
+									<a class="nav-link" href="{{ path('app_user_index') }}">Utilisateurs</a>
+								</li>
+								<li>
+									<a class="nav-link" href="/api">API</a>
+								</li>
 							{% endif %}
 						</ul>
 						<form class="d-flex">
 							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-							<button class="btn btn-outline-success" type="submit">Recherche</button>
+							<button class="m-2 btn btn-success" type="submit">Recherche</button>
 						</form>
 
 						{# logout btn #}
@@ -109,28 +115,51 @@
 					<ul>
 
 						{% if is_granted('ROLE_ADMIN') %}
-						<li class="nav-item">
-							<a class="title" href="{{ path('app_company_index') }}">Sociétés</a>
-						</li>
-						<hr/>
+							<li class="nav-item">
+								<a class="title" href="{{ path('app_company_index') }}">Sociétés</a>
+							</li>
+							<li class="nav-item">
+								<a href="/company">Voir les sociétés</a>
+							</li>
+							<li class="nav-item">
+								<a href="/company/new">Créer une société</a>
+							</li>
+							<hr/>
 						{% endif %}
-						
+
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_agency_index') }}">Agences</a>
 						</li>
-						<hr/>
+						<li class="nav-item">
+							<a href="/agency">Voir les agences</a>
+						</li>
+						<li class="nav-item">
+							<a href="/agency/new">Créer une agence</a><hr/>
+						</li>
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_booking_index') }}">Bookings</a>
 						</li>
-						<hr/>
-						
-						{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
-							<a class="title" href="{{ path('app_user_index') }}">Utilisateurs</a>
+							<a href="/booking">Voir les bookings</a>
+						</li>
+						<li class="nav-item">
+							<a href="/customer">Liste des clients</a>
 						</li>
 						<hr/>
+
+						{% if is_granted('ROLE_ADMIN') %}
+							<li class="nav-item">
+								<a class="title" href="{{ path('app_user_index') }}">Utilisateurs</a>
+							</li>
+							<li class="nav-item">
+								<a href="/user">Voir les utilisateurs</a>
+							</li>
+							<li class="nav-item">
+								<a href="/user/new">Créer un utilisateur</a>
+							</li>
+							<hr/>
 						{% endif %}
-						
+
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_product_index') }}">Produits</a>
 						</li>
@@ -139,29 +168,32 @@
 						</li>
 
 						{% if is_granted('ROLE_ADMIN') %}
-						<li class="nav-item">
-							<a href="/brand">Gestion des marques</a>
-						</li>
+							<li class="nav-item">
+								<a href="/brand">Gestion des marques</a>
+							</li>
 						{% endif %}
-						
+
 						<li class="nav-item">
 							<a href="/brandmodel">Gestion des modèles</a>
 						</li>
-						<hr/>
+
 						<li class="nav-item">
 							<a href="/productevent">Evénements de produits</a>
 						</li>
 
 
 						<hr/>
-						
+
 						{% if is_granted('ROLE_ADMIN') %}
-						<li class="nav-item">
-							<a class="title" href="/option">Gestion des options</a>
-						</li>
-						<li class="nav-item">
-							<a href="/optionstock">Gestion des stocks d'options</a>
-						</li>
+							<li class="nav-item">
+								<a class="title" href="/option">Gestion des options</a>
+							</li>
+							<li class="nav-item">
+								<a href="/optionstock">Gestion des stocks d'options</a>
+							</li>
+							<li class="nav-item">
+								<a href="/optionstock/new">Créer un stock d'options</a>
+							</li>
 						{% endif %}
 
 
@@ -169,7 +201,12 @@
 						<li class="nav-item">
 							<a class="title" href="/pricelist">Grilles tarifaires</a>
 						</li>
-
+						<li class="nav-item">
+							<a href="/pricelist">Voir les grilles</a>
+						</li>
+						<li class="nav-item">
+							<a href="/pricelist/new">Consulter les grilles</a>
+						</li>
 
 					</ul>
 

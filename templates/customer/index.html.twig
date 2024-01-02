@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1>Gestion des clients</h1>
+
+    <table class="table table-hover table-sm table-striped table-responsive-sm">
+       <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th></th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                {# <th>IsVerified</th> #}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td><img class="imgProfile" src="{{ asset('uploads/' ~ user.picture) }}"/></td>
+                <td>{{ user.email }}</td>
+                <td>
+                
+                {{ user.roles ? user.roles|json_encode : '' }}
+               
+                </td>
+    
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.LastName }}</td>
+                {# <td>{{ user.isVerified ? 'Yes' : 'No' }}</td> #}
+                <td>
+                    <a class="btn btn-sm btn-secondary" href="{{ path('app_user_show', {'id': user.id}) }}">Voir</a>
+                    <a class="btn btn-sm btn-warning" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-sm btn-success" href="{{ path('app_user_new') }}">Créer un client</a>
+{% endblock %}

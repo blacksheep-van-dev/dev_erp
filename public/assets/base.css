@@ -41,7 +41,7 @@ h1{
 }
 
 .offcanvas-body li{
-  padding: 10px 0px;
+  /* padding: 10px 0px; */
   list-style: none;
 }
 .offcanvas-body li a{
