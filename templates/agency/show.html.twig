@@ -2,6 +2,11 @@
 
 {% block title %}Agency{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('Agency/show.css') }}">
+{% endblock %}
+
 {% block body %}
     <h1>Agency</h1>
 
@@ -15,12 +20,140 @@
                 <th>Name</th>
                 <td>{{ agency.name }}</td>
             </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ company.name }}</td>
+            </tr>
+            <tr>
+                <th>Phone number</th>
+                {% if agency.phone|length > 0 %}
+                <td>{{ agency.phone }}</td>
+                 {% else %}
+                <td>no phone number provided</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th>Email</th>
+                {% if agency.email|length > 0 %}
+                <td>{{ agency.email }}</td>
+                {% else %}
+                <td>no email provided</td>
+                {% endif %}
+            </tr>
         </tbody>
     </table>
+
+    <div class="zoneDepliable productsZone">
+            <h3>Agency's products</h3>
+            <div class="arrowZone">
+                <svg class="arrow arrow1Products" width="34px" height="34px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>arrow-down-circle</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-414.000000, -1089.000000)" fill="#000000"> <path d="M436.535,1105.88 L430.879,1111.54 C430.639,1111.78 430.311,1111.85 430,1111.79 C429.689,1111.85 429.361,1111.78 429.121,1111.54 L423.465,1105.88 C423.074,1105.49 423.074,1104.86 423.465,1104.46 C423.855,1104.07 424.488,1104.07 424.879,1104.46 L429,1108.59 L429,1098 C429,1097.45 429.448,1097 430,1097 C430.553,1097 431,1097.45 431,1098 L431,1108.59 L435.121,1104.46 C435.512,1104.07 436.146,1104.07 436.535,1104.46 C436.926,1104.86 436.926,1105.49 436.535,1105.88 L436.535,1105.88 Z M430,1089 C421.163,1089 414,1096.16 414,1105 C414,1113.84 421.163,1121 430,1121 C438.837,1121 446,1113.84 446,1105 C446,1096.16 438.837,1089 430,1089 L430,1089 Z" id="arrow-down-circle" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+                <svg class="arrow cacher arrow2Products" width="34px" height="34px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>arrow-up-circle</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-362.000000, -1089.000000)" fill="#000000"> <path d="M384.535,1105.54 C384.145,1105.93 383.512,1105.93 383.121,1105.54 L379,1101.41 L379,1112 C379,1112.55 378.553,1113 378,1113 C377.447,1113 377,1112.55 377,1112 L377,1101.41 L372.879,1105.54 C372.488,1105.93 371.854,1105.93 371.465,1105.54 C371.074,1105.14 371.074,1104.51 371.465,1104.12 L377.121,1098.46 C377.361,1098.22 377.689,1098.15 378,1098.21 C378.311,1098.15 378.639,1098.22 378.879,1098.46 L384.535,1104.12 C384.926,1104.51 384.926,1105.14 384.535,1105.54 L384.535,1105.54 Z M378,1089 C369.163,1089 362,1096.16 362,1105 C362,1113.84 369.163,1121 378,1121 C386.837,1121 394,1113.84 394,1105 C394,1096.16 386.837,1089 378,1089 L378,1089 Z" id="arrow-up-circle" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+            </div>
+    </div>
+        <div class="products cacher">
+            <table class="table tabProductZone">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Label</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                    </tr>
+			    </thead>
+            <tbody>
+            {% for product in products %}
+            {{ dump(product) }}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.label }}</td>
+                        <td>{{ product.type }}</td>
+                        <td><button>See Product</button></td>
+                    </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+    <div class="zoneDepliable bookingsZone">
+        <h3>Agency's bookings</h3>
+        <div class="arrowZone">
+            <svg class="arrow arrow1Booking" width="34px" height="34px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>arrow-down-circle</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-414.000000, -1089.000000)" fill="#000000"> <path d="M436.535,1105.88 L430.879,1111.54 C430.639,1111.78 430.311,1111.85 430,1111.79 C429.689,1111.85 429.361,1111.78 429.121,1111.54 L423.465,1105.88 C423.074,1105.49 423.074,1104.86 423.465,1104.46 C423.855,1104.07 424.488,1104.07 424.879,1104.46 L429,1108.59 L429,1098 C429,1097.45 429.448,1097 430,1097 C430.553,1097 431,1097.45 431,1098 L431,1108.59 L435.121,1104.46 C435.512,1104.07 436.146,1104.07 436.535,1104.46 C436.926,1104.86 436.926,1105.49 436.535,1105.88 L436.535,1105.88 Z M430,1089 C421.163,1089 414,1096.16 414,1105 C414,1113.84 421.163,1121 430,1121 C438.837,1121 446,1113.84 446,1105 C446,1096.16 438.837,1089 430,1089 L430,1089 Z" id="arrow-down-circle" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+            <svg class="arrow cacher arrow2Booking" width="34px" height="34px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>arrow-up-circle</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-362.000000, -1089.000000)" fill="#000000"> <path d="M384.535,1105.54 C384.145,1105.93 383.512,1105.93 383.121,1105.54 L379,1101.41 L379,1112 C379,1112.55 378.553,1113 378,1113 C377.447,1113 377,1112.55 377,1112 L377,1101.41 L372.879,1105.54 C372.488,1105.93 371.854,1105.93 371.465,1105.54 C371.074,1105.14 371.074,1104.51 371.465,1104.12 L377.121,1098.46 C377.361,1098.22 377.689,1098.15 378,1098.21 C378.311,1098.15 378.639,1098.22 378.879,1098.46 L384.535,1104.12 C384.926,1104.51 384.926,1105.14 384.535,1105.54 L384.535,1105.54 Z M378,1089 C369.163,1089 362,1096.16 362,1105 C362,1113.84 369.163,1121 378,1121 C386.837,1121 394,1113.84 394,1105 C394,1096.16 386.837,1089 378,1089 L378,1089 Z" id="arrow-up-circle" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+        </div>
+    </div>
+        <div class="bookings cacher">
+            <table class="table tabBookingZone">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Reference</th>
+                        <th>Customer</th>
+                        <th>Date Begin</th>
+                        <th>Date End</th>
+                    </tr>
+			    </thead>
+            <tbody>
+            {% for booking in bookings %}
+            {{ dump(booking) }}
+                    <tr>
+                        <td>{{ booking.id }}</td>
+                        <td>{{ booking.reference }}</td>
+                        <td>{{ booking.User }}</td>
+                        <td>{{ booking.dateBegin|date('Y-m-d') }}</td>
+                        <td>{{ booking.dateEnd|date('Y-m-d') }}</td>
+                    </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
     <a href="{{ path('app_agency_index') }}">back to list</a>
 
     <a href="{{ path('app_agency_edit', {'id': agency.id}) }}">edit</a>
 
     {{ include('agency/_delete_form.html.twig') }}
+{% endblock %}
+
+
+
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+let arrow1Products = document.querySelector('.arrow1Products')
+let arrow2Products = document.querySelector('.arrow2Products')
+let arrow1Booking = document.querySelector('.arrow1Booking')
+let arrow2Booking = document.querySelector('.arrow2Booking')
+let products = document.querySelector('.products')
+let bookings = document.querySelector('.bookings')
+
+function hideShow(hide, show) {
+    hide.classList.add('cacher')
+    show.classList.remove('cacher')
+}
+
+arrow1Products.addEventListener('click',() => {
+    hideShow(arrow1Products, arrow2Products)
+    products.classList.remove('cacher')
+})
+arrow2Products.addEventListener('click',() => {
+    hideShow(arrow2Products, arrow1Products)
+    products.classList.add('cacher')
+})
+
+
+arrow1Booking.addEventListener('click',() => {
+    hideShow(arrow1Booking, arrow2Booking)
+    bookings.classList.remove('cacher')
+})
+arrow2Booking.addEventListener('click',() => {
+    hideShow(arrow2Booking, arrow1Booking)
+    bookings.classList.add('cacher')
+})
+
+
+})
+</script>
 {% endblock %}

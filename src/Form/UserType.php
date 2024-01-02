@@ -1,42 +1,43 @@
 <?php
-
 namespace App\Form;
-
+use Symfony\Component\Form\Event\PreSubmitEvent;
 use App\Entity\User;
 use App\Entity\Agency;
+use App\Entity\Company;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\CallbackTransformer;
 // use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\ChoiceToValueTransformer;
 //file upload
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 //password
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 //EntityType
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
+use Symfonycasts\DynamicForms\DependentField;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Agence;
 
 class UserType extends AbstractType
 {
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
+        $builder = new DynamicFormBuilder($builder);
+            $builder
             ->add('email')
-            // ->add('roles') transform
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'Admin' => 'ROLE_ADMIN',
-                    'User' => 'ROLE_USER',
-                    // 'Agency' => 'ROLE_AGENCY',
-                    // 'Company' => 'ROLE_COMPANY',
-                ],
-                'multiple' => true,
-                'expanded' => true,
-            ])
-
-
-
             ->add('password', PasswordType::class, [
                 'mapped' => false,
                 'required' => false,
@@ -47,7 +48,6 @@ class UserType extends AbstractType
             ])
             ->add('firstName')
             ->add('LastName')
-            ->add('isVerified')
             //picure upload
             ->add('picture', FileType::class, [
                 'label' => 'Picture (JPG, PNG, JPEG file)',
@@ -59,25 +59,59 @@ class UserType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'User' => 'ROLE_USER',
+                    'Admin Agency' => [
+                        'Agent de production' => 'ROLE_agentProd',
+                        'Agent de comptoir' => 'ROLE_agentComptoir',
+                        'Call Center' => 'ROLE_callCenter',
+                        'Responsable Agence' => 'ROLE_respAgence',
+                        'Resp de Parc Agences Propes' => 'ROLE_respAgenceProp',
+                        'Resp Régional Agences Licenciés' => 'ROLE_respAgenceLic',
+                        'Resp Secteur Point Relais' => 'ROLE_respPtRelais',
+                    ],
+                    'Admin Company' => [
+                        'Admin Société' => 'ROLE_adminSociete', //ok
+                        'Resp Parc Agences Propes' => 'ROLE_respAgenceProp',
+                        'Resp Parc Agences Licencies' => 'ROLE_respAgenceLic',
+                    ],
+                ],
+                // 'multiple' => true,
+                // 'expanded' => true,
+                // 'data' => $options['data']->getRoles(),
+            ])
+
+
             ->add('agencies', EntityType::class, [
                 'label' => 'Choisir une agence',
                 'multiple' => true,
+                'expanded' => false,
                 'class' => Agency::class,
-                // choice label nom et prenom
-                // 'choice_label' => 'nom',
                 'choice_label' => 'name',
-                // expanded => true
-                'expanded' => true,
-
                 "required" => false,
+                'row_attr' => ['class' => 'agenceZone'],
+                'placeholder' => 'Choisissez une agence',
                 'attr' => [
                     'class' => 'form-control',
                 ],
                 //read only
-                'disabled' => true,
+                // 'disabled' => true,
             ])
-            
-        ;
+
+            ->add('company', EntityType::class, [
+                'label' => 'Choisir une société',
+                'multiple' => false,
+                'class' => Company::class,
+                'choice_label' => 'name',
+                'row_attr' => ['class' => 'companyZone'],
+
+                "required" => false,
+                'placeholder' => 'Choisissez une société',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -87,7 +121,7 @@ class UserType extends AbstractType
         ]);
 
         // role Array to string conversion
-        
+
 
     }
 }

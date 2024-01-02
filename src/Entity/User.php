@@ -20,6 +20,8 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\GetCollection;
+use App\Controller\UserSearchController;
+use App\Controller\UserVerifyController;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -30,8 +32,26 @@ use ApiPlatform\Metadata\GetCollection;
 #[ApiFilter(SearchFilter::class, properties: ['roles' => 'partial', 'id' => 'exact','LastName' => 'partial','firstName' => 'partial','email' => 'partial'])]
 
 #[Get()]
+#[Get(
+    name:'userSearch',
+    uriTemplate:"/user/search/{data}",
+    controller:UserSearchController::class,
+    openapiContext: [
+        'summary' => 'Effectue une recherche sur les champs Prénom/Nom/Email',
+        // 'parameters' => ['string'],
+    ],
+)]
+
 #[GetCollection()]
-#[Post(security:"is_granted('ROLE_callCenter') or is_granted('ROLE_superAdmin')")]
+// #[Post(security:"is_granted('ROLE_callCenter') or is_granted('ROLE_superAdmin')")]
+#[Post()]
+
+// Route pour effectuer la vérification
+#[Post(
+    name:'verifyAction',
+    uriTemplate:"/user/verify/{id}",
+    controller:UserVerifyController::class
+)]
 
 #[Patch(security:"is_granted('ROLE_client') 
             or is_granted('ROLE_superAdmin')")]
@@ -42,6 +62,9 @@ use ApiPlatform\Metadata\GetCollection;
 #[Delete(security:"is_granted('ROLE_client') 
             or is_granted('ROLE_superAdmin')")]
 
+
+
+            
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -55,10 +78,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Assert\Choice(choices :["ROLE_USER", "ROLE_agentProd", "ROLE_agentComptoir", "ROLE_callCenter", "ROLE_respAgenceProp", "ROLE_respAgence", "ROLE_adminSociete", "ROLE_respAgenceProp", "ROLE_respAgenceLic"])]
+    // #[Assert\Choice(choices :["ROLE_USER", "ROLE_agentProd", "ROLE_agentComptoir", "ROLE_callCenter", "ROLE_respAgenceProp", "ROLE_respAgence", "ROLE_adminSociete", "ROLE_respAgenceProp", "ROLE_respAgenceLic"],message:'haha')]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\Column]
-    private array $roles = [];
+    private $roles = []||"";
 
     /**
      * @var string The hashed password
@@ -88,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
     #[Assert\NotBlank(message:'Renseigner une agence de rattachement')]
     #[Groups(['read:allUser','write:User'])]
-    #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Agency::class, mappedBy: 'users', cascade: ['persist'])]
     private Collection $agencies;
 
     #[Groups(['read:allUser'])]
@@ -99,7 +122,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $addresses;
 
     
-    #[Assert\NotBlank(message:'Renseigner une société de rattachement')]
+    // #[Assert\NotBlank(message:'Renseigner une société de rattachement')]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Company $company = null;
@@ -141,26 +164,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
-    {
+
+
+     public function getRoles(): array
+     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        // $roles[] = 'ROLE_USER';
-
+        $roles = [$this->roles];
         return array_unique($roles);
-    }
+     }
+        
+    // Modification de SetRoles afin qu'il SET une chaine de caractère
+        public function setRoles($roles): static
+        {
+            $this->roles = $roles;
 
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
+            return $this;
+        }
 
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -338,6 +363,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function __toString()
+{
+    return $this->firstName . ' ' . $this->LastName;
+}
 
     
     

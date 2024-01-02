@@ -18,8 +18,19 @@ class AgencyController extends AbstractController
     #[Route('/', name: 'app_agency_index', methods: ['GET'])]
     public function index(AgencyRepository $agencyRepository): Response
     {
+        $user = $this->getUser();
+        $role = $user->getRoles()[0];
+        $agencies = [];
+
+        if ($role == "ROLE_ADMIN") {
+            $agencies = $agencyRepository->findAll();
+        } else {
+            $agencies = $user->getAgencies();
+        }
+
         return $this->render('agency/index.html.twig', [
-            'agencies' => $agencyRepository->findAll(),
+            'user' => $user,
+            'agencies' => $agencies,
         ]);
     }
 
@@ -65,7 +76,18 @@ class AgencyController extends AbstractController
     #[Route('/{id}', name: 'app_agency_show', methods: ['GET'])]
     public function show(Agency $agency): Response
     {
+        $company = $agency->getCompany();
+        $products = $agency->getProducts();
+        $options = $agency->getOptions();
+        $bookings = $agency->getBookings();
+        // dump($products);
+        // dump($bookings);
+        // dd($company);
         return $this->render('agency/show.html.twig', [
+            'products' => $products,
+            'company' => $company,
+            'options' => $options,
+            'bookings' => $bookings,
             'agency' => $agency,
         ]);
     }

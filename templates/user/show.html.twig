@@ -26,8 +26,14 @@
 				<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
 			</tr>
 			<tr>
-				<th>Mot de passe</th>
-				<td>{{ user.password }}</td>
+				<th>Mot de passe</th>	
+				<td>
+				{% if user.password is not null %}
+					{{ user.password }}
+				{% else %}
+					{{ "no password"}}
+				{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>Prénom</th>

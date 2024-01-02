@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Agency;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -17,8 +18,27 @@ class ProductController extends AbstractController
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
     public function index(ProductRepository $productRepository): Response
     {
+        $user = $this->getUser();
+        $role = $user->getRoles()[0];
+        $agences = $user->getAgencies();
+        $products = [];
+
+        if ($role == "ROLE_ADMIN") {
+            dump("role ADMIN détecté");
+            $products = $productRepository->findAll();
+        } else {
+            dump("role AUTRE QUE ADMIN détecté");
+            foreach ($agences as $agence) {
+                $productCollection = $agence->getProducts();
+                foreach ($productCollection->getIterator() as $product) {
+                    $products[] = $product;
+                }
+            }
+        }
+
+
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $products,
         ]);
     }
 

@@ -59,7 +59,7 @@ class Calendar
     #[ORM\OneToMany(mappedBy: 'calendar', targetEntity: CalendarClosedDays::class)]
     private Collection $calendarClosedDays;
 
-    #[ORM\OneToMany(mappedBy: 'calendar', targetEntity: CalendarDay::class)]
+    #[ORM\OneToMany(mappedBy: 'calendar', targetEntity: CalendarDay::class, cascade: ['persist', 'remove'])]
     private Collection $calendarDays;
 
     #[ORM\ManyToOne(inversedBy: 'calendars')]

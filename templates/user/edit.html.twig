@@ -2,6 +2,12 @@
 
 {% block title %}Edit User{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('User/newForm.css') }}">
+{% endblock %}
+
+
 {% block body %}
     <h1>Edit User</h1>
 
@@ -10,4 +16,63 @@
     <a href="{{ path('app_user_index') }}">back to list</a>
 
     {{ include('user/_delete_form.html.twig') }}
+{% endblock %}
+
+
+{% block javascripts %}
+{{ parent() }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+let user_roles = document.querySelector('#user_roles')
+    console.log(user_roles.value)
+let agenceZone = document.querySelector('.agenceZone')
+let companyZone = document.querySelector('.companyZone')
+let user_agence = document.querySelector('#user_agencies')
+let user_company = document.querySelector('#user_company')
+
+function nullValue(field) {
+    (field !== null)
+    field.value = ''
+}
+
+function hideShow(hide, show) {
+    hide.classList.add('cacher')
+    show.classList.remove('cacher')
+}
+
+// a l'appel de la page EDIT on vérifie si le user est en lien a une société ou a un agence pour afficher les bons champs
+if (user_roles.value == 0) {
+    nullValue(user_agence)
+    nullValue(user_company)
+    agenceZone.classList.add('cacher')
+    companyZone.classList.add('cacher')
+} else if (user_roles.value > 5){
+    nullValue(user_agence)
+    hideShow(agenceZone,companyZone)
+} else if (user_roles.value < 5 && user_roles.value != 0) {
+    console.log('inférieur a 5')
+    nullValue(user_company)
+    hideShow(companyZone,agenceZone)
+}
+
+
+user_roles.addEventListener('change', function (){
+if (user_roles.value == 0) {
+    nullValue(user_agence)
+    nullValue(user_company)
+    agenceZone.classList.add('cacher')
+    companyZone.classList.add('cacher')
+} else if (user_roles.value > 5){
+    nullValue(user_agence)
+    hideShow(agenceZone,companyZone)
+} else if (user_roles.value < 5 && user_roles.value != 0) {
+    console.log('inférieur a 5')
+    nullValue(user_company)
+    hideShow(companyZone,agenceZone)
+}
+})
+
+})
+</script>
 {% endblock %}

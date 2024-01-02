@@ -21,6 +21,7 @@ class MainController extends AbstractController
             $user = $this->getUser();
 
             return $this->render('main/index.html.twig', [
+                'user' => $user,
                 'controller_name' => 'MainController',
             ]);
 

@@ -19,7 +19,7 @@ class Company
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:allAgency','read:allCompany'])]
+    #[Groups(['read:allAgency','read:allCompany','write:Agency'])]
     private ?int $id = null;
 
     #[Groups(['read:allAgency','read:allCompany','write:Company'])]
