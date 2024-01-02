@@ -18,8 +18,29 @@ class ProductEventController extends AbstractController
     #[Route('/', name: 'app_product_event_index', methods: ['GET'])]
     public function index(ProductEventRepository $productEventRepository): Response
     {
+        $user = $this->getUser();
+        $role = $user->getRoles()[0];
+        $productEvent = [];
+
+        if ($role == "ROLE_ADMIN") {
+            $product_events = $productEventRepository->findAll();
+        } else {
+            $agences = $user->getAgencies();
+            
+            foreach ($agences as $agence) {
+                $productAgency = $agence->getProducts();
+
+                foreach ($productAgency as $product) {
+                    $productEventProduct = $product->getProductEvents()->toArray();
+                    $productEvent = array_merge($productEvent, $productEventProduct);
+                }
+            }
+        }
+
+
         return $this->render('product_event/index.html.twig', [
-            'product_events' => $productEventRepository->findAll(),
+            'product_events' => $productEvent,
+            // 'product_events' => $productEventRepository->findAll(),
         ]);
     }
 
