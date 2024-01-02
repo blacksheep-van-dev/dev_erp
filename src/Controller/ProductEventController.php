@@ -7,6 +7,7 @@ use App\Form\ProductEventType;
 use App\Repository\ProductEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,8 +18,29 @@ class ProductEventController extends AbstractController
     #[Route('/', name: 'app_product_event_index', methods: ['GET'])]
     public function index(ProductEventRepository $productEventRepository): Response
     {
+        $user = $this->getUser();
+        $role = $user->getRoles()[0];
+        $productEvent = [];
+
+        if ($role == "ROLE_ADMIN") {
+            $product_events = $productEventRepository->findAll();
+        } else {
+            $agences = $user->getAgencies();
+            
+            foreach ($agences as $agence) {
+                $productAgency = $agence->getProducts();
+
+                foreach ($productAgency as $product) {
+                    $productEventProduct = $product->getProductEvents()->toArray();
+                    $productEvent = array_merge($productEvent, $productEventProduct);
+                }
+            }
+        }
+
+
         return $this->render('product_event/index.html.twig', [
-            'product_events' => $productEventRepository->findAll(),
+            'product_events' => $productEvent,
+            // 'product_events' => $productEventRepository->findAll(),
         ]);
     }
 
@@ -65,8 +87,18 @@ class ProductEventController extends AbstractController
 
 
     #[Route('/new', name: 'app_product_event_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,Security $security): Response
     {
+        $user = $security->getUser();
+        $agencies = $user->getAgencies();
+        $productTab = [];
+
+        foreach ($agencies as $agencie) {
+            //push les produits dans le tableau de produits initialement vide
+            $productAgencie = $agencie->getProducts()->toArray();
+            $productTab = array_merge($productTab, $productAgencie);
+        }
+
         $productEvent = new ProductEvent();
         $form = $this->createForm(ProductEventType::class, $productEvent);
         $form->handleRequest($request);
@@ -81,6 +113,7 @@ class ProductEventController extends AbstractController
         return $this->render('product_event/new.html.twig', [
             'product_event' => $productEvent,
             'form' => $form,
+            'products' => $productTab,
         ]);
     }
 
