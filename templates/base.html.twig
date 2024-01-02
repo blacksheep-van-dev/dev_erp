@@ -134,20 +134,26 @@
 						<li class="nav-item">
 							<a class="title" href="{{ path('app_product_index') }}">Produits</a>
 						</li>
+
+						
+						{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
 							<a href="/product/category">Catégories produits</a>
 						</li>
+						{% endif %}
 
 						{% if is_granted('ROLE_ADMIN') %}
 						<li class="nav-item">
 							<a href="/brand">Gestion des marques</a>
 						</li>
-						{% endif %}
-						
+
 						<li class="nav-item">
 							<a href="/brandmodel">Gestion des modèles</a>
 						</li>
+						
+						{% endif %}
 						<hr/>
+
 						<li class="nav-item">
 							<a href="/productevent">Evénements de produits</a>
 						</li>

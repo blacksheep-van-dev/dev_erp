@@ -1,11 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New ProductEvent{% endblock %}
+{% block title %}
+New ProductEvent
+{% endblock %}
 
-{% block body %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('ProductEvent/newForm.css') }}">
+{% endblock %}
+
+
+{# {% block body %}
     <h1>Create new ProductEvent</h1>
 
     {{ include('product_event/_form.html.twig') }}
 
     <a href="{{ path('app_product_event_index') }}">back to list</a>
+{% endblock %} #}
+
+
+{% block body %}
+	<h1>Create new ProductEvent</h1>
+
+	<form method="post" action="{{ path('app_product_event_new') }}">
+		{{ form_start(form) }}
+		<H2>Choose The Product :</H2>
+		<div class="productDiv">
+				{% for product in products %}
+					<div class="product">
+						<H4>{{ product.label }}</H4>
+						<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Ftrip-ou.com%2Fvanlife%2F62-family-van.html&psig=AOvVaw36Pddvo_T9h8b_EGY4FvtC&ust=1704288506452000&source=images&cd=vfe&opi=89978449&ved=2ahUKEwjO8rjJ576DAxVy4gIHHajNCWkQjRx6BAgAEBU" alt="" srcset="">
+						{% for agencie in product.agency %}
+							<p>{{ agencie.name }}</p>
+						{% endfor %}
+						<input class="check" type="checkbox" name="selected_products[]" id="{{ product.id }}" value="{{ product.id }}">
+					</div>
+				{% endfor %}
+		</div>
+
+		<div class="my-custom-class-for-errors">
+			{{ form_errors(form) }}
+		</div>
+
+	<div class="productDivBis">
+		<div>
+			{{ form_row(form.type) }}
+		</div>
+		<div>
+			{{ form_row(form.dateBegin) }}
+			{{ form_row(form.dateEnd) }}
+		</div>
+		<div>
+			{{ form_row(form.km) }}
+		</div>
+		<div class="cacher">
+			{{ form_row(form.product) }}
+		</div>
+	</div>
+		<button type="submit">Create</button>
+		{{ form_end(form) }}
+	</form>
+
+	<a href="{{ path('app_product_event_index') }}">Back to list</a>
+{% endblock %}
+
+
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+let check = document.querySelectorAll('.check');
+let productDiv = document.querySelector('.productDiv');
+let productDivBis = document.querySelector('.productDivBis');
+let h2 = document.querySelector('H2');
+let productFinal = document.querySelector('#product_event_product')
+
+let productSelected = 0
+
+productDivBis.classList.add('cacher')
+check.forEach(checkbox => {
+	checkbox.addEventListener('click', function () {
+	h2.innerHTML ='Choose the information'
+	productDivBis.classList.remove('cacher')
+	productDiv.classList.add('cacher')
+	productDiv.classList.remove('productDiv')
+	productFinal.value = checkbox.value
+	console.log(productFinal.value )
+})
+});
+
+
+})
+</script>
 {% endblock %}

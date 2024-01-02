@@ -18,6 +18,7 @@ class ProductEventType extends AbstractType
             ->add('km')
             ->add('product')
         ;
+        // dd($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
