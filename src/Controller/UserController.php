@@ -35,6 +35,8 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // dump($request);
             // dd($request);
 
             // CAS 1 - Quand On renseigne uniquement l'agence dans le formulaire :
@@ -77,9 +79,6 @@ class UserController extends AbstractController
                     $user->addAgency($company);
                 };
             }
-
-
-
 
             // upload picture profile
             $profileUrl = $form->get('picture')->getData();
@@ -165,7 +164,12 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
 
         //ligne ci-dessous, reprend directement le rôle connu, pour initialiser la liste déroulante des RÔLES avec le bon rôle
-        $form->get('roles')->setData($user->getRoles()[0]);
+        $form->get('roles')->setData($user->getRoles());
+        $rolesUser = $form->get('roles')->getData();
+        $roleReel = $rolesUser[0];
+        // dump($rolesUser);
+        // dump($roleReel);
+        // dd('voila');
 
         $form->handleRequest($request);
 
@@ -176,7 +180,6 @@ class UserController extends AbstractController
             // dd(($request));
             // agencies entity type
             $agencies = $request->get('user')['agencies'];
-            dd($request->get('user')['agencies']);
 
             foreach ($agencies as $agency) {
                 $agence = $entityManager->getRepository(Agency::class)->find($agency);
@@ -249,6 +252,7 @@ class UserController extends AbstractController
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,
+            'roleUser' => $roleReel,
             'form' => $form,
         ]);
     }
