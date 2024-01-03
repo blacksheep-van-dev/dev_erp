@@ -2,10 +2,74 @@
 
 {% block title %}New Product{% endblock %}
 
-{% block body %}
-    <h1>Create new Product</h1>
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('Product/newForm.css') }}">
+{% endblock %}
 
-    {{ include('product/_form.html.twig') }}
+{% block body %}
+
+	<form method="post" action="{{ path('app_product_new') }}">
+		{{ form_start(form) }}
+    <h2>Choose the Agency :</h2>
+    <div class="agencesZone">
+        {% for agency in agences %}
+        <div class="agence">
+                <h3>{{agency.name}}</h3>
+                <input class="check" type="checkbox" name="selected_products[]" id="{{ agency.id }}" value="{{ agency.id }}">
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="productDivBis">
+		<div>
+			{{ form_row(form.label) }}
+		</div>
+		<div>
+			{{ form_row(form.productCategory) }}
+		</div>
+		<div class="cacher">
+			{{ form_row(form.agency) }}
+		</div>
+		<div>
+			{{ form_row(form.type) }}
+			{{ form_row(form.model) }}
+		</div>
+	</div>
+		<button type="submit">Create</button>
+		{{ form_end(form) }}
+	</form>
+    {# {{ include('product/_form.html.twig') }} #}
 
     <a href="{{ path('app_product_index') }}">back to list</a>
+{% endblock %}
+
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+let check = document.querySelectorAll('.check');
+let agencesZone = document.querySelector('.agencesZone');
+let productDivBis = document.querySelector('.productDivBis');
+let h2 = document.querySelector('H2');
+let agenceFinal = document.querySelector('#product_agency')
+
+productDivBis.classList.add('cacher')
+
+check.forEach(checkbox => {
+	checkbox.addEventListener('click', function () {
+        console.log(checkbox.value)
+	h2.innerHTML ='Create new Product'
+	productDivBis.classList.remove('cacher')
+	agencesZone.classList.add('cacher')
+	agencesZone.classList.remove('agencesZone')
+	agenceFinal.value = checkbox.value
+	console.log(agenceFinal.value )
+})
+});
+
+
+})
+</script>
 {% endblock %}

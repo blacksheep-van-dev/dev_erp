@@ -45,6 +45,10 @@ class ProductController extends AbstractController
     #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $agences = $user->getAgencies()->toArray();
+        // dd($agences);
+
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -57,6 +61,7 @@ class ProductController extends AbstractController
         }
 
         return $this->render('product/new.html.twig', [
+            'agences' => $agences,
             'product' => $product,
             'form' => $form,
         ]);
