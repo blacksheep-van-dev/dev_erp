@@ -81,7 +81,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // #[Assert\Choice(choices :["ROLE_USER", "ROLE_agentProd", "ROLE_agentComptoir", "ROLE_callCenter", "ROLE_respAgenceProp", "ROLE_respAgence", "ROLE_adminSociete", "ROLE_respAgenceProp", "ROLE_respAgenceLic"],message:'haha')]
     #[Groups(['read:allUser','write:User'])]
     #[ORM\Column]
-    private $roles = []||"";
+    // private $roles = []||"";
+    private array $roles = [];
 
     /**
      * @var string The hashed password
@@ -167,15 +168,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
      public function getRoles(): array
-     {
+    {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles = [$this->roles];
+        $roles[] = 'ROLE_USER';
+
         return array_unique($roles);
-     }
+    }
         
     // Modification de SetRoles afin qu'il SET une chaine de caractère
-        public function setRoles($roles): static
+        public function setRoles(array $roles): static
         {
             $this->roles = $roles;
 

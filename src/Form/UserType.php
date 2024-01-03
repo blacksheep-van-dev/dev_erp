@@ -77,7 +77,7 @@ class UserType extends AbstractType
                         'Resp Parc Agences Licencies' => 'ROLE_respAgenceLic',
                     ],
                 ],
-                // 'multiple' => true,
+                'multiple' => true,
                 // 'expanded' => true,
                 // 'data' => $options['data']->getRoles(),
             ])
