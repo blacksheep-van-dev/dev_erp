@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Agency;
 // agencies
 use App\Entity\Booking;
-use App\Entity\User;
 // products
 use App\Entity\Product;
 //ProductEvent
@@ -15,6 +14,7 @@ use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,10 +24,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookingController extends AbstractController
 {
     #[Route('/', name: 'app_booking_index', methods: ['GET'])]
-    public function index(BookingRepository $bookingRepository): Response
+    public function index(BookingRepository $bookingRepository, Security $security): Response
     {
+        $bookings = [];
+        $user = $security->getUser();
+        $agences = $user->getAgencies()->toArray();
+            foreach ($agences as $agence) {
+                $bookingsOfAgency= $agence->getBookings()->toArray();
+                $bookings = array_merge($bookings, $bookingsOfAgency);
+            }
+
         return $this->render('booking/index.html.twig', [
-            'bookings' => $bookingRepository->findAll(),
+            // 'bookings' => $bookingRepository->findAll(),
+            'bookings' => $bookings,
         ]);
     }
 

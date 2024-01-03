@@ -72,7 +72,7 @@ class UserType extends AbstractType
                         'Resp Secteur Point Relais' => 'ROLE_respPtRelais',
                     ],
                     'Admin Company' => [
-                        'Admin Société' => 'ROLE_adminSociete', //ok
+                        'Admin Société' => 'ROLE_adminSociete',
                         'Resp Parc Agences Propes' => 'ROLE_respAgenceProp',
                         'Resp Parc Agences Licencies' => 'ROLE_respAgenceLic',
                     ],

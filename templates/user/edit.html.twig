@@ -25,13 +25,13 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 let user_roles = document.querySelector('#user_roles')
-    console.log(user_roles.value)
 let agenceZone = document.querySelector('.agenceZone')
 let companyZone = document.querySelector('.companyZone')
 let user_agence = document.querySelector('#user_agencies')
 let user_company = document.querySelector('#user_company')
 
 user_roles.removeAttribute('multiple');
+user_agence.removeAttribute('multiple');
 
 function nullValue(field) {
     (field !== null)
@@ -65,15 +65,22 @@ if (user_roles.value == 0) {
     nullValue(user_company)
     agenceZone.classList.add('cacher')
     companyZone.classList.add('cacher')
+    console.log(`ROLE du User est de ${user_roles.value}`)
 } else if (user_roles.value > 7){
     nullValue(user_agence)
     hideShow(agenceZone,companyZone)
+    console.log(`ROLE du User est de ${user_roles.value}`)
 } else if (user_roles.value <= 7 && user_roles.value != 0) {
     user_agence.removeAttribute('multiple')
     nullValue(user_company)
     hideShow(companyZone,agenceZone)
+    console.log(`ROLE du User est de ${user_roles.value}`)
 }
 })
+
+optionSelect.forEach(option => {
+    console.log(`Role retrouvé dans la liste déroulante`)
+});
 
 })
 </script>
