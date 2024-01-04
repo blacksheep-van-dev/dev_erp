@@ -164,12 +164,13 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
 
         //ligne ci-dessous, reprend directement le rôle connu, pour initialiser la liste déroulante des RÔLES avec le bon rôle
-        $form->get('roles')->setData($user->getRoles());
+        
         $rolesUser = $form->get('roles')->getData();
+        $roleSetter = [];
         $roleReel = $rolesUser[0];
-        // dump($rolesUser);
-        // dump($roleReel);
-        // dd('voila');
+        $roleSetter[] = $roleReel;
+        $form->get('roles')->setData($roleSetter);
+        dump($roleReel);
 
         $form->handleRequest($request);
 
@@ -238,13 +239,7 @@ class UserController extends AbstractController
                 );
             }
 
-
-
-
-
-
-
-
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);

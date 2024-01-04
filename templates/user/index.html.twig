@@ -25,11 +25,7 @@
                 <td><img class="imgProfile" src="{{ asset('uploads/' ~ user.picture) }}"/></td>
                 <td>{{ user.email }}</td>
                 <td>
-                
-                {# {{ user.roles ? user.roles|json_encode : '' }} #}
-                
-                
-                
+                {{ user.roles ? user.roles|json_encode : '' }}
                 </td>
     
                 <td>{{ user.firstName }}</td>
