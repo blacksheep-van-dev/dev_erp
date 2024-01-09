@@ -2,10 +2,180 @@
 
 {% block title %}New Booking{% endblock %}
 
-{% block body %}
-    <h1>Create new Booking</h1>
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('Booking/newForm.css') }}">
+{% endblock %}
 
-    {{ include('booking/_form.html.twig') }}
+
+{% block body %}
+    {# <h1>Create new Booking</h1> #}
+
+	<form method="post" action="{{ path('app_booking_new') }}">
+		{{ form_start(form) }}
+    <h2>Choose the Agency Source :</h2>
+    
+
+{# STEP 1 #}
+    <div class="divFlex agencesSource">
+        {% for agency in agencies %}
+        <div class="sousDiv agenceSource">
+                <h3>{{agency.name}}</h3>
+                <input class="check agenceSourceCheck" type="checkbox" name="selected_products[]" id="{{ agency.id }}" value="{{ agency.id }}">
+        </div>
+        {% endfor %}
+    </div>
+
+
+{# STEP 2 #}
+    <div class="divFlex agencesTarget">
+        {% for agency in allAgencies %}
+        <div class="sousDiv agenceTarget">
+                <h3>{{agency.name}}</h3>
+                <input class="check agenceTargetCheck" type="checkbox" name="selected_products[]" id="{{ agency.id }}" value="{{ agency.id }}">
+        </div>
+        {% endfor %}
+    </div>
+
+
+{# STEP 3 #}
+    <div class="divFlex dates">
+		<div class="sousDiv">
+			{{ form_row(form.dateBegin) }}
+			{{ form_row(form.dateEnd) }}
+            <a class="dateButton">Send Dates</a>
+		</div>
+    </div>
+   
+
+   {# STEP 4 #}
+    <div class="divFlex customerSelected">
+        {% for customer in allUser %}
+        <div class="sousDiv customer">
+                <h3>{{customer.LastName}}</h3>
+                <h4>{{customer.firstName}}</h4>
+                <input class="check customerCheck" type="checkbox" name="selected_products[]" id="{{ customer.id }}" value="{{ customer.id }}">
+        </div>
+        {% endfor %}
+    </div>
+
+    {# STEP 5 #}
+    <div class="divFlex productSelected">
+                {{ form_row(form.bookingItems) }}
+                <a class="productButton">Send Products</a>
+    </div>
+
+    {# STEP 6 #}
+    <div class="divFlex otherOption">
+		<div class="cacher">
+			{{ form_row(form.bookingAgencySource) }}
+			{{ form_row(form.bookingAgencyTarget) }}
+		</div>
+
+		<div class="cacher">
+			{{ form_row(form.OptionStocks) }}
+		</div>
+
+		<div class="cacher">
+			{{ form_row(form.User) }}
+		</div>
+
+        <div>
+			{{ form_row(form.reference) }}
+		</div>
+	</div>
+    <button type="submit">Create</button>
+		{{ form_end(form) }}
+	</form>
 
     <a href="{{ path('app_booking_index') }}">back to list</a>
+{% endblock %}
+
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+let h2 = document.querySelector('h2')
+let agencesSource = document.querySelector('.agencesSource')
+let agencesTarget = document.querySelector('.agencesTarget')
+let dates = document.querySelector('.dates')
+let customerSelected = document.querySelector('.customerSelected')
+let productSelected = document.querySelector('.productSelected')
+let otherOption = document.querySelector('.otherOption')
+let bookingReference = document.querySelector('#booking_reference')
+let check = document.querySelectorAll('.check')
+
+// Dates
+let dateBeginYear = document.querySelector('#booking_dateBegin_year')
+let dateBeginMonth = document.querySelector('#booking_dateBegin_month')
+let dateBeginDay = document.querySelector('#booking_dateBegin_day')
+let dateEndYear = document.querySelector('#booking_dateEnd_year')
+let dateEndMonth = document.querySelector('#booking_dateEnd_month')
+let dateEndDay = document.querySelector('#booking_dateEnd_day')
+let datesButton = document.querySelector('.dateButton')
+
+let productButton = document.querySelector('.productButton')
+
+// Champ Final généré automatiquement par SYMFONY via les FORM TYPE :
+let agencySourceFinal = document.querySelector('#booking_bookingAgencySource')
+let agencyTargetFinal = document.querySelector('#booking_bookingAgencyTarget')
+let customerFinal = document.querySelector('#booking_User')
+
+// Masquer les Zones pas nécessaire
+ agencesTarget.classList.add('cacher')
+ dates.classList.add('cacher')
+ customerSelected.classList.add('cacher')
+ productSelected.classList.add('cacher')
+ otherOption.classList.add('cacher')
+
+check.forEach(checkbox => {
+	checkbox.addEventListener('click', function () {
+        if (checkbox.classList.contains('agenceSourceCheck')) {
+                agencySourceFinal.value = checkbox.value
+                agencesSource.classList.add('cacher')
+                agencesTarget.classList.remove('cacher')
+                h2.innerHTML ='Choose the Agency Target'
+        }
+        if (checkbox.classList.contains('agenceTargetCheck')) {
+                agencyTargetFinal.value = checkbox.value
+                agencesTarget.classList.add('cacher')
+                dates.classList.remove('cacher')
+                h2.innerHTML ='Choose the Dates'
+        }
+        if (checkbox.classList.contains('customerCheck')) {
+                customerFinal.value = checkbox.value
+                customerSelected.classList.add('cacher')
+                productSelected.classList.remove('cacher')
+                productSelected.style.height = 'auto';
+                h2.innerHTML ='Choose Booking Item'
+        }
+    })
+});
+
+
+datesButton.addEventListener('click', function (){
+        if (dateBeginYear.value == "" || dateBeginMonth.value == "" || dateBeginDay.value == "" || dateEndYear.value == "" || dateEndMonth.value == "" || dateEndDay.value == "") {
+        console.log('Les dates ne sont pas correctes')
+        }
+        if(dateBeginYear.value > dateEndYear.value){
+                 console.log("L'année de début est plus grande que l'année de fin de location, PROBLEME")
+                    } else if(dateBeginYear.value == dateEndYear.value && dateBeginMonth.value > dateEndMonth.value){
+                         console.log("Le mois début est plus grande que le mois de fin de location, PROBLEME")
+                        }else if(dateBeginYear.value == dateEndYear.value && dateBeginMonth.value == dateEndMonth.value && dateBeginDay.value > dateEndDay.value){
+                                                console.log("Le jour de début est plus grand que le jour de fin de location, PROBLEME")
+                            } else {
+                                    dates.classList.add('cacher')
+                                    customerSelected.classList.remove('cacher')
+                                    h2.innerHTML ='Choose the Customer'
+                                    }
+    })
+
+productButton.addEventListener('click', function(){
+    productSelected.classList.add('cacher')
+    otherOption.classList.remove('cacher')
+    bookingReference.value = `BS_${agencesSource.value}_${customerSelected.value}`
+})
+})
+</script>
 {% endblock %}

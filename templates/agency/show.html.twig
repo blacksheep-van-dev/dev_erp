@@ -62,12 +62,11 @@
 			    </thead>
             <tbody>
             {% for product in products %}
-            {{ dump(product) }}
                     <tr>
                         <td>{{ product.id }}</td>
                         <td>{{ product.label }}</td>
                         <td>{{ product.type }}</td>
-                        <td><button>See Product</button></td>
+                        <td><a href="{{ path('app_product_show', {'id': product.id}) }}">See Product</a></td>
                     </tr>
             {% endfor %}
                 </tbody>
