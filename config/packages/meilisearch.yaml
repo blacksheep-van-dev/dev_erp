@@ -17,3 +17,7 @@ meilisearch:
             class: App\Entity\Address
         -   name: brands
             class: App\Entity\Brand
+        -   name: agencies
+            class: App\Entity\Agency
+    doctrineSubscribedEvents: ['postPersist', 'postUpdate', 'preRemove']
+           
