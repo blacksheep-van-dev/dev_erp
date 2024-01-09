@@ -34,9 +34,6 @@ class Brand
     #[Groups(['write:brand','read:allBrand'])]
     private Collection $Models;
 
-
-    //
-
     public function __construct()
     {
         $this->Models = new ArrayCollection();

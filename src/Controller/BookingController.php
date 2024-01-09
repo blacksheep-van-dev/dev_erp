@@ -5,13 +5,15 @@ namespace App\Controller;
 use App\Entity\Agency;
 // agencies
 use App\Entity\Booking;
-// products
+// bookingItem
 use App\Entity\Product;
 //ProductEvent
 use App\Entity\ProductEvent;
 // users
 use App\Form\BookingType;
+use App\Repository\AgencyRepository;
 use App\Repository\BookingRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -84,13 +86,13 @@ class BookingController extends AbstractController
             $agency = $entityManager->getRepository(Agency::class)->find($agStart);
 
      
-            $products = $agency->getProducts();
+            $bookingItem = $agency->getbookingItem();
 
        
          
             // return array
             $array = [];
-            foreach ($products as $product) {
+            foreach ($bookingItem as $product) {
 
                 // check if a product event is already created for this product id 
                 $productEvent = $entityManager->getRepository(ProductEvent::class)->findOneBy([
@@ -113,8 +115,6 @@ class BookingController extends AbstractController
                         // 'optionsStock' => $product->getOptionStocks(),
                     ];
                 }
-
-                
             }
 
 
@@ -130,13 +130,55 @@ class BookingController extends AbstractController
     }
 
     #[Route('/new', name: 'app_booking_new', methods: ['GET', 'POST'])]
-    public function new (Request $request, EntityManagerInterface $entityManager): Response
+    public function new (UserRepository $userRepository,AgencyRepository $agencyRepository,Request $request, EntityManagerInterface $entityManager): Response
     {
         $booking = new Booking();
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
+        $agency = $this->getUser()->getAgencies()->toArray();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $nombreAleatoire = rand(66, 9999);
+            $agenceSource = $booking->getBookingAgencySource()->getName();
+            $customer = $booking->getUser()->getLastName();
+
+            // Gestion de la référence booking
+            $booking->setReference(("BS_".$agenceSource."_".$customer."_".$nombreAleatoire));
+
+           // Gestion product (si agence départ est différent de agence d'arrivée ... alors nouvelle agence du product = agence d'arrivée)
+           $agencySource = $booking->getBookingAgencySource();
+           $agencyTarget = $booking->getBookingAgencyTarget();
+           $bookingItem = $booking->getBookingItems();
+            if ($agencySource != $agencyTarget) {
+                foreach ($bookingItem as $product) {
+                    $bookingItemelected = $product->getProduct();
+                    $bookingItemelected->setAgency($agencyTarget);
+                   }
+           }
+
+           // Gestion des Dates
+           $dateBegin = $request->get('booking')['dateBegin'];
+           $dateEnd = $request->get('booking')['dateEnd'];
+
+                    if (empty($dateEnd['year'])||empty($dateBegin['year'])||empty($dateEnd['month'])||empty($dateBegin['month'])||empty($dateEnd['day'])||empty($dateBegin['day'])) {
+                        error_log("IL faut impérativement renseigner des dates de début et de fin");
+                        echo("IL faut impérativement renseigner des dates de début et de fin");
+                    }
+                    if ($dateEnd['year'] < $dateBegin['year']) {
+                        error_log("L'année de début d'un booking, ne peut être supérieur à l'année de fin d'un booking");
+                        echo("L'année de début d'un booking, ne peut être supérieur à l'année de fin d'un booking");
+                    } elseif ($dateEnd['year'] == $dateBegin['year']) {
+                            if ($dateEnd['month'] < $dateBegin['month']) {
+                                error_log("Le mois de début d'un booking, ne peut être supérieur au mois de fin d'un booking");
+                                echo("Le mois de début d'un booking, ne peut être supérieur au mois de fin d'un booking");
+                            } elseif ($dateEnd['month'] == $dateBegin['month']) {
+                                if ($dateEnd['day'] < $dateBegin['day']) {
+                                    error_log("Le jour de début d'un booking, ne peut être supérieur au jour de fin d'un booking");
+                                    echo("Le jour de début d'un booking, ne peut être supérieur au jour de fin d'un booking");    
+                                }
+                            }
+                    }
+
             $entityManager->persist($booking);
             $entityManager->flush();
 
@@ -144,18 +186,43 @@ class BookingController extends AbstractController
         }
 
         return $this->render('booking/new.html.twig', [
+            'agencies' => $agency,
+            'allAgencies' => $agencyRepository->findAll(),
+            'allUser' => $userRepository->findAll(),
             'booking' => $booking,
             'form' => $form,
         ]);
     }
 
+
+
+
     #[Route('/{id}', name: 'app_booking_show', methods: ['GET'])]
     public function show(Booking $booking): Response
     {
+        $bookingItems = $booking->getBookingItems()->toArray();
+        $products = [];
+        $activities = [];
+        $insurances = [];
+
+        foreach ($bookingItems as $bookingItem) {
+            $products[] = $bookingItem->getProduct();
+            $activities[] = $bookingItem->getActivities();
+            $insurances[] = $bookingItem->getInsurance();
+        }
+
         return $this->render('booking/show.html.twig', [
+            'bookingItems' => $bookingItems,
             'booking' => $booking,
+            'products' => $products,
+            'insurances' => $insurances,
+            'activities' => $activities,
         ]);
     }
+
+
+
+
 
     #[Route('/{id}/edit', name: 'app_booking_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Booking $booking, EntityManagerInterface $entityManager): Response

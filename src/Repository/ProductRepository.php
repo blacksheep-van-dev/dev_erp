@@ -65,8 +65,6 @@ class ProductRepository extends ServiceEntityRepository
             ->orderBy('p.label', 'ASC');
         return $qb->getQuery()->getResult();
     }
-
-
     
 
 
@@ -83,14 +81,20 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->orderBy('p.label', 'ASC');
-
-
         return $qb->getQuery()->getResult();
+    }
 
-
-    
-
-    
+// return product which no product event for an agency
+    public function findProductWithoutEventCreated($agency)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->leftJoin('p.productEvents', 'pe')
+            ->leftJoin('p.agency', 'a')
+            ->andWhere('a.id = :agency')
+            ->andWhere('pe.id is null')
+            ->setParameter('agency', $agency)
+            ->orderBy('p.label', 'ASC');
+        return $qb->getQuery()->getResult();
     }
     
 

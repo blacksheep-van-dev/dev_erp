@@ -17,14 +17,24 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\GetCollection;
+use App\Controller\ProductsAvailableController;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:allProduct']],
     denormalizationContext: ['groups' => ['write:Product']],
+    operations: [
+        new GetCollection(
+            controller: ProductsAvailableController::class,
+            name: "Available Product",
+            uriTemplate: "products/available/",
+            openapiContext: [
+                'summary' => 'Find availble products',
+            ],
+        ),
+    ],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['type' => 'exact', 'model' => 'exact', 'productCategory' => 'exact','agency' => 'partial'])]
-
 #[Get()]
 #[GetCollection()]
 #[Post(security:"is_granted('ROLE_adminSociete') or is_granted('ROLE_superAdmin')")]

@@ -1,0 +1,39 @@
+.cacher {
+    display: none!important;
+}
+
+.divFlex {
+    border: solid 2px rgb(233, 180, 180);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.sousDiv {
+    display: flex;
+    padding: 10px;
+    border: solid 2px green;
+    margin: 10px;
+    width: 29%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.productSelected{
+    display: flex;
+    flex-direction: column;
+}
+
+.p-4 {
+    padding: 0rem!important;
+}
+
+.m-4 {
+    margin: 0rem!important;
+}

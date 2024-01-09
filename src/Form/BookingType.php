@@ -35,7 +35,6 @@ class BookingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
-
         // $builder = new DynamicFormBuilder($builder);
 
 
@@ -109,6 +108,7 @@ class BookingType extends AbstractType
                         
         //         }
             ])
+            ->setMethod('POST')
 
 
 

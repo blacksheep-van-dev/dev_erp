@@ -32,17 +32,10 @@ use App\Controller\UserVerifyController;
 #[ApiFilter(SearchFilter::class, properties: ['roles' => 'partial', 'id' => 'exact','LastName' => 'partial','firstName' => 'partial','email' => 'partial'])]
 
 #[Get()]
-#[Get(
-    name:'userSearch',
-    uriTemplate:"/user/search/{data}",
-    controller:UserSearchController::class,
-    openapiContext: [
-        'summary' => 'Effectue une recherche sur les champs Prénom/Nom/Email',
-        // 'parameters' => ['string'],
-    ],
-)]
 
 #[GetCollection()]
+
+
 // #[Post(security:"is_granted('ROLE_callCenter') or is_granted('ROLE_superAdmin')")]
 #[Post()]
 

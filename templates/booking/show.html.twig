@@ -1,34 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Booking{% endblock %}
+{% block title %}Booking
+{% endblock %}
 
 {% block body %}
-    <h1>Booking</h1>
+	<h1>Booking</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ booking.id }}</td>
-            </tr>
-            <tr>
-                <th>Reference</th>
-                <td>{{ booking.reference }}</td>
-            </tr>
-            <tr>
-                <th>DateBegin</th>
-                <td>{{ booking.dateBegin ? booking.dateBegin|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateEnd</th>
-                <td>{{ booking.dateEnd ? booking.dateEnd|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<pre>
+    {{ dump(bookingItems) }}
+</pre>
+	<pre>
+    {{ dump(products) }}
+</pre>
+	<pre>
+    {{ dump(activities) }}
+</pre>
+	<pre>
+    {{ dump(insurances) }}
+</pre>
 
-    <a href="{{ path('app_booking_index') }}">back to list</a>
 
-    <a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
 
-    {{ include('booking/_delete_form.html.twig') }}
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ booking.id }}</td>
+			</tr>
+			<tr>
+				<th>Reference</th>
+				<td>{{ booking.reference }}</td>
+			</tr>
+			<tr>
+				<th>DateBegin</th>
+				<td>{{ booking.dateBegin ? booking.dateBegin|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>DateEnd</th>
+				<td>{{ booking.dateEnd ? booking.dateEnd|date('Y-m-d') : '' }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="productZone">
+		<h3>Les produits du booking :</h3>
+		<div class="detailProducts">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>idProduct</th>
+						<th>labelProduct</th>
+					</tr>
+				</thead>
+				<tbody>
+                {% for product in products %}
+					<tr>
+						<td>{{product.id}}</td>
+						<td>{{product.label}}</td>
+					</tr>
+            {% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+    <div class="productZone">
+		<h3>Les assurances du booking :</h3>
+		<div class="detailProducts">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>idInsurance</th>
+						<th>labelInsurance</th>
+					</tr>
+				</thead>
+				<tbody>
+                {% for insurance in insurances %}
+					<tr>
+						<td>{{insurance.id}}</td>
+						<td>{{insurance.label}}</td>
+					</tr>
+            {% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<a href="{{ path('app_booking_index') }}">back to list</a>
+
+	<a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
+
+	{{ include('booking/_delete_form.html.twig') }}
 {% endblock %}
